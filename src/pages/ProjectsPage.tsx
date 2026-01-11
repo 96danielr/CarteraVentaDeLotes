@@ -61,7 +61,7 @@ export function ProjectsPage() {
       />
 
       {/* Project Cards */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {filteredProjects.map(project => {
           const projectLots = lots.filter(l => l.projectId === project.id);
           const sold = projectLots.filter(l => l.status === 'sold').length;

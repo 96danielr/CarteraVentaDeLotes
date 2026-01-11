@@ -173,72 +173,73 @@ export function DashboardPage() {
       </div>
 
       {/* Main Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 lg:grid-cols-4">
         <Card className="hover-lift group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Proyectos Activos</CardTitle>
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <FolderKanban className="h-5 w-5 text-primary" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 pt-4 sm:px-6 sm:pt-6">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Proyectos</CardTitle>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <FolderKanban className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold gradient-text">
+          <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+            <div className="text-2xl sm:text-3xl font-bold gradient-text">
               {projects.filter(p => p.status === 'active').length}
             </div>
             <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
               de {projects.length} totales
-              <ArrowUpRight className="h-3 w-3" />
+              <ArrowUpRight className="h-3 w-3 hidden sm:inline" />
             </p>
           </CardContent>
         </Card>
 
         <Card className="hover-lift group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Lotes Vendidos</CardTitle>
-            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <MapPin className="h-5 w-5 text-accent" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 pt-4 sm:px-6 sm:pt-6">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Vendidos</CardTitle>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-accent/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <MapPin className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-accent">{soldLots}</div>
-            <div className="flex gap-2 mt-1">
-              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">{reservedLots} apartados</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700">{availableLots} disponibles</span>
+          <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+            <div className="text-2xl sm:text-3xl font-bold text-accent">{soldLots}</div>
+            <div className="flex flex-wrap gap-1 sm:gap-2 mt-1">
+              <span className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">{reservedLots} apt</span>
+              <span className="text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-green-100 text-green-700">{availableLots} disp</span>
             </div>
           </CardContent>
         </Card>
 
         <Card className="hover-lift group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Clientes</CardTitle>
-            <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Users className="h-5 w-5 text-purple-600" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 pt-4 sm:px-6 sm:pt-6">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Clientes</CardTitle>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-purple-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-purple-600">{clients.length}</div>
-            <p className="text-xs text-muted-foreground mt-1">clientes registrados</p>
+          <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+            <div className="text-2xl sm:text-3xl font-bold text-purple-600">{clients.length}</div>
+            <p className="text-xs text-muted-foreground mt-1 hidden sm:block">clientes registrados</p>
+            <p className="text-xs text-muted-foreground mt-1 sm:hidden">registrados</p>
           </CardContent>
         </Card>
 
         <Card className="hover-lift group">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Cobranza</CardTitle>
-            <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <DollarSign className="h-5 w-5 text-green-600" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 px-4 pt-4 sm:px-6 sm:pt-6">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">Cobranza</CardTitle>
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-green-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-green-600">{formatCurrency(totalCollected)}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              de {formatCurrency(totalSales)} en ventas
+          <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6">
+            <div className="text-xl sm:text-3xl font-bold text-green-600">{formatCurrency(totalCollected)}</div>
+            <p className="text-xs text-muted-foreground mt-1 truncate">
+              de {formatCurrency(totalSales)}
             </p>
           </CardContent>
         </Card>
       </div>
 
       {/* Charts and Tables */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2">
         {/* Project Summary */}
         <Card>
           <CardHeader>

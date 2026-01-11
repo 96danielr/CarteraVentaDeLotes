@@ -119,17 +119,17 @@ export function PaymentsPage() {
 
       {/* Filters */}
       <Card>
-        <CardHeader className="pb-4">
-          <CardTitle className="text-base flex items-center gap-2">
+        <CardHeader className="pb-3 sm:pb-4">
+          <CardTitle className="text-sm sm:text-base flex items-center gap-2">
             <Filter className="h-4 w-4 text-muted-foreground" />
             Filtros
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="flex flex-col sm:flex-row gap-4">
+        <CardContent className="pt-0">
+          <div className="space-y-3 sm:space-y-0 sm:flex sm:flex-row sm:gap-4">
             <div className="flex-1">
               <SearchInput
-                placeholder="Buscar por recibo, cliente o lote..."
+                placeholder="Buscar recibo, cliente o lote..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 onClear={() => setSearch('')}
@@ -138,7 +138,7 @@ export function PaymentsPage() {
             <Select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="w-full sm:w-52"
+              className="w-full sm:w-48"
             >
               <option value="all">Todos los tipos</option>
               <option value="down_payment">Enganche</option>
@@ -149,8 +149,72 @@ export function PaymentsPage() {
         </CardContent>
       </Card>
 
-      {/* Table */}
-      <Card>
+      {/* Mobile Card View */}
+      <div className="block md:hidden space-y-3">
+        {filteredPayments.map(payment => {
+          const lot = lots.find(l => l.id === payment.lotId);
+          const project = lot ? projects.find(p => p.id === lot.projectId) : null;
+          const client = getClientById(payment.clientId);
+
+          return (
+            <Card key={payment.id} className="p-4">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+                    <DollarSign className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground">{client?.name || '-'}</p>
+                    <p className="text-sm text-muted-foreground">{formatDateShort(payment.date)}</p>
+                  </div>
+                </div>
+                <span className="font-bold text-green-600 text-lg">
+                  +{formatCurrency(payment.amount)}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Recibo</p>
+                  <p className="font-mono text-sm">{payment.receiptNumber}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Lote</p>
+                  <p className="font-medium">{lot?.number || '-'}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Tipo</p>
+                  <Badge variant="outline" className="font-normal mt-1">
+                    {getPaymentTypeLabel(payment.type)}
+                  </Badge>
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Método</p>
+                  <p className="font-medium">{getPaymentMethodLabel(payment.method)}</p>
+                </div>
+              </div>
+
+              {project && (
+                <div className="mt-3 pt-3 border-t border-border/50">
+                  <p className="text-xs text-muted-foreground">{project.name}</p>
+                </div>
+              )}
+            </Card>
+          );
+        })}
+
+        {filteredPayments.length === 0 && (
+          <Card className="p-8 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-muted mx-auto mb-4 flex items-center justify-center">
+              <CreditCard className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <p className="text-muted-foreground">No se encontraron pagos</p>
+          </Card>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <Card className="hidden md:block">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>

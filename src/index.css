@@ -238,4 +238,66 @@
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background: hsl(220 20% 75%);
   }
+
+  /* Mobile-first utilities */
+  .hide-on-mobile {
+    @apply hidden sm:block;
+  }
+
+  .show-on-mobile {
+    @apply block sm:hidden;
+  }
+
+  /* Safe area for mobile notch */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Touch-friendly tap targets */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Mobile card view for tables */
+  .mobile-card {
+    @apply p-4 rounded-xl bg-white/70 border border-border/50 space-y-3;
+  }
+
+  .mobile-card-row {
+    @apply flex justify-between items-center text-sm;
+  }
+
+  .mobile-card-label {
+    @apply text-muted-foreground text-xs uppercase tracking-wide;
+  }
+
+  .mobile-card-value {
+    @apply font-medium text-foreground;
+  }
+}
+
+/* Mobile-specific responsive adjustments */
+@media (max-width: 640px) {
+  h1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .stagger-children > * {
+    animation-delay: 0s !important;
+  }
+
+  /* Reduce padding on mobile */
+  .glass, .glass-solid {
+    padding: 1rem;
+  }
 }
