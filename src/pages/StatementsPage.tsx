@@ -158,26 +158,26 @@ export function StatementsPage() {
             <CardContent className="pt-6">
               {/* Main Stats */}
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-                <div className="p-4 rounded-xl bg-white/50 border border-border/50">
-                  <div className="flex items-center gap-2 text-muted-foreground text-sm mb-1">
+                <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div className="flex items-center gap-2 text-slate-400 text-sm mb-1">
                     <DollarSign className="h-4 w-4" />
                     Precio Total
                   </div>
-                  <p className="text-2xl font-bold text-foreground">{formatCurrency(statement.lot.price)}</p>
+                  <p className="text-2xl font-bold text-white">{formatCurrency(statement.lot.price)}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-green-50 border border-green-200/50">
-                  <div className="flex items-center gap-2 text-green-700 text-sm mb-1">
+                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                  <div className="flex items-center gap-2 text-emerald-400 text-sm mb-1">
                     <TrendingUp className="h-4 w-4" />
                     Total Pagado
                   </div>
-                  <p className="text-2xl font-bold text-green-600">{formatCurrency(statement.totalPaid)}</p>
+                  <p className="text-2xl font-bold text-emerald-400">{formatCurrency(statement.totalPaid)}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-amber-50 border border-amber-200/50">
-                  <div className="flex items-center gap-2 text-amber-700 text-sm mb-1">
+                <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                  <div className="flex items-center gap-2 text-amber-400 text-sm mb-1">
                     <Clock className="h-4 w-4" />
                     Saldo Pendiente
                   </div>
-                  <p className="text-2xl font-bold text-amber-600">{formatCurrency(statement.remaining)}</p>
+                  <p className="text-2xl font-bold text-amber-400">{formatCurrency(statement.remaining)}</p>
                 </div>
                 <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
                   <div className="flex items-center gap-2 text-primary text-sm mb-1">
@@ -235,8 +235,8 @@ export function StatementsPage() {
             <Card className="hover-lift">
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-                    <Clock className="h-5 w-5 text-amber-600" />
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <Clock className="h-5 w-5 text-amber-400" />
                   </div>
                   <span className="text-sm text-muted-foreground">Plazo</span>
                 </div>
@@ -255,8 +255,8 @@ export function StatementsPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                  <DollarSign className="h-4 w-4 text-green-600" />
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                  <DollarSign className="h-4 w-4 text-emerald-400" />
                 </div>
                 Historial de Pagos
               </CardTitle>
@@ -285,7 +285,7 @@ export function StatementsPage() {
                         <Badge variant="outline">{getPaymentTypeLabel(payment.type)}</Badge>
                       </TableCell>
                       <TableCell className="text-muted-foreground">{getPaymentMethodLabel(payment.method)}</TableCell>
-                      <TableCell className="text-right font-semibold text-green-600">
+                      <TableCell className="text-right font-semibold text-emerald-400">
                         +{formatCurrency(payment.amount)}
                       </TableCell>
                     </TableRow>

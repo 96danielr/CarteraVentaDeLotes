@@ -123,23 +123,23 @@ export function LotsPage() {
         </Card>
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-amber-500" />
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-amber-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-amber-600">{reservedCount}</p>
-              <p className="text-xs text-muted-foreground">Apartados</p>
+              <p className="text-2xl font-bold text-amber-400">{reservedCount}</p>
+              <p className="text-xs text-slate-400">Apartados</p>
             </div>
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
+            <div className="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center">
+              <div className="w-3 h-3 rounded-full bg-rose-400" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-red-600">{soldCount}</p>
-              <p className="text-xs text-muted-foreground">Vendidos</p>
+              <p className="text-2xl font-bold text-rose-400">{soldCount}</p>
+              <p className="text-xs text-slate-400">Vendidos</p>
             </div>
           </div>
         </Card>

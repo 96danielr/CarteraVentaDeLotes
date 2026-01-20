@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { MapPin, AlertCircle, Sparkles, ArrowRight, Lock, Mail } from 'lucide-react';
+import { AlertCircle, ArrowRight, Lock, Mail } from 'lucide-react';
 
 export function LoginPage() {
   const [email, setEmail] = useState('');
@@ -36,54 +36,60 @@ export function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background decorations */}
+      {/* Animated background gradients */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-20 w-80 h-80 bg-accent/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-primary/5 to-accent/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-32 w-[400px] h-[400px] bg-amber-500/15 rounded-full blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px]" />
       </div>
 
-      {/* Dot pattern */}
-      <div className="absolute inset-0 dot-pattern opacity-30" />
+      {/* Subtle grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `linear-gradient(hsl(217 33% 30%) 1px, transparent 1px), linear-gradient(90deg, hsl(217 33% 30%) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px'
+        }}
+      />
 
-      <div className="w-full max-w-md relative z-10 fade-in-up">
+      <div className="w-full max-w-md relative z-10 fade-up">
         {/* Logo Header */}
         <div className="text-center mb-8">
-          <div className="relative inline-block">
-            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center shadow-xl shadow-primary/25 mb-4">
-              <MapPin className="h-10 w-10 text-white" />
-            </div>
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center shadow-lg">
-              <Sparkles className="h-4 w-4 text-white" />
-            </div>
+          <div className="relative inline-block mb-4">
+            <img
+              src="/TERRA VALORIS LOGO TRANSPARENCIA.png"
+              alt="Terra Valoris"
+              className="w-28 h-28 object-contain mx-auto drop-shadow-2xl"
+            />
           </div>
-          <h1 className="text-3xl font-bold gradient-text mb-2">Cartera de Lotes</h1>
-          <p className="text-muted-foreground">Sistema de Gestión Inmobiliaria</p>
+          <h1 className="text-2xl font-bold text-white mb-1">INVERSIONES TERRA VALORIS</h1>
+          <p className="text-emerald-400 font-semibold text-sm tracking-wider">S.A.S</p>
+          <p className="text-slate-400 text-sm mt-2">Sistema de Gestión de Cartera</p>
         </div>
 
         {/* Login Card */}
-        <Card className="glass hover:shadow-xl transition-shadow duration-300">
+        <Card className="glass border-white/10">
           <CardHeader className="text-center pb-2">
-            <CardTitle className="text-xl">Bienvenido</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-xl text-white">Bienvenido</CardTitle>
+            <CardDescription className="text-slate-400">
               Ingresa tus credenciales para continuar
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-4">
             <form onSubmit={handleSubmit} className="space-y-5">
               {error && (
-                <div className="flex items-center gap-3 p-4 text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-xl animate-in slide-in-from-top duration-200">
+                <div className="flex items-center gap-3 p-4 text-sm text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl">
                   <AlertCircle className="h-5 w-5 flex-shrink-0" />
                   <span>{error}</span>
                 </div>
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">
+                <Label htmlFor="email" className="text-sm font-medium text-slate-300">
                   Correo electrónico
                 </Label>
                 <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                   <Input
                     id="email"
                     type="email"
@@ -91,17 +97,17 @@ export function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={loading}
-                    className="pl-11"
+                    className="pl-11 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-emerald-500/50 focus:ring-emerald-500/20"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-sm font-medium">
+                <Label htmlFor="password" className="text-sm font-medium text-slate-300">
                   Contraseña
                 </Label>
                 <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500" />
                   <Input
                     id="password"
                     type="password"
@@ -109,14 +115,14 @@ export function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={loading}
-                    className="pl-11"
+                    className="pl-11 bg-white/5 border-white/10 text-white placeholder:text-slate-500 focus:border-emerald-500/50 focus:ring-emerald-500/20"
                   />
                 </div>
               </div>
 
               <Button
                 type="submit"
-                className="w-full h-12 text-base group"
+                className="w-full h-12 text-base btn-glow group"
                 disabled={loading}
               >
                 {loading ? (
@@ -140,10 +146,10 @@ export function LoginPage() {
             <div className="mt-8">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-border/50" />
+                  <div className="w-full border-t border-white/10" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-3 bg-white/70 text-muted-foreground">Usuarios de prueba</span>
+                  <span className="px-3 bg-[hsl(222_47%_11%)] text-slate-500">Usuarios de prueba</span>
                 </div>
               </div>
 
@@ -151,34 +157,34 @@ export function LoginPage() {
                 <button
                   type="button"
                   onClick={() => { setEmail('master@lotes.com'); setPassword('master123'); }}
-                  className="p-3 text-left rounded-xl bg-white/50 hover:bg-white/80 border border-border/50 transition-all duration-200 hover:shadow-sm"
+                  className="p-3 text-left rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-amber-500/20 transition-all duration-200 group"
                 >
-                  <p className="text-xs font-semibold text-foreground">Master</p>
-                  <p className="text-xs text-muted-foreground truncate">master@lotes.com</p>
+                  <p className="text-xs font-semibold text-amber-400">Master</p>
+                  <p className="text-xs text-slate-500 truncate group-hover:text-slate-400">master@lotes.com</p>
                 </button>
                 <button
                   type="button"
                   onClick={() => { setEmail('admin@lotes.com'); setPassword('admin123'); }}
-                  className="p-3 text-left rounded-xl bg-white/50 hover:bg-white/80 border border-border/50 transition-all duration-200 hover:shadow-sm"
+                  className="p-3 text-left rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-purple-500/20 transition-all duration-200 group"
                 >
-                  <p className="text-xs font-semibold text-foreground">Admin</p>
-                  <p className="text-xs text-muted-foreground truncate">admin@lotes.com</p>
+                  <p className="text-xs font-semibold text-purple-400">Admin</p>
+                  <p className="text-xs text-slate-500 truncate group-hover:text-slate-400">admin@lotes.com</p>
                 </button>
                 <button
                   type="button"
                   onClick={() => { setEmail('ventas@lotes.com'); setPassword('ventas123'); }}
-                  className="p-3 text-left rounded-xl bg-white/50 hover:bg-white/80 border border-border/50 transition-all duration-200 hover:shadow-sm"
+                  className="p-3 text-left rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-emerald-500/20 transition-all duration-200 group"
                 >
-                  <p className="text-xs font-semibold text-foreground">Comercial</p>
-                  <p className="text-xs text-muted-foreground truncate">ventas@lotes.com</p>
+                  <p className="text-xs font-semibold text-emerald-400">Comercial</p>
+                  <p className="text-xs text-slate-500 truncate group-hover:text-slate-400">ventas@lotes.com</p>
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setEmail('cliente1@email.com'); setPassword('cliente123'); }}
-                  className="p-3 text-left rounded-xl bg-white/50 hover:bg-white/80 border border-border/50 transition-all duration-200 hover:shadow-sm"
+                  onClick={() => { setEmail('cliente1@email.com'); setPassword('cliente1123'); }}
+                  className="p-3 text-left rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-cyan-500/20 transition-all duration-200 group"
                 >
-                  <p className="text-xs font-semibold text-foreground">Cliente</p>
-                  <p className="text-xs text-muted-foreground truncate">cliente1@email.com</p>
+                  <p className="text-xs font-semibold text-cyan-400">Cliente</p>
+                  <p className="text-xs text-slate-500 truncate group-hover:text-slate-400">cliente1@email.com</p>
                 </button>
               </div>
             </div>
@@ -186,7 +192,7 @@ export function LoginPage() {
         </Card>
 
         {/* Footer */}
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <p className="text-center text-xs text-slate-600 mt-6">
           Sistema POC v0.1.0
         </p>
       </div>

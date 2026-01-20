@@ -21,6 +21,7 @@ interface DataContextType {
   // Lot operations
   addLot: (lot: Omit<Lot, 'id'>) => void;
   updateLot: (id: string, data: Partial<Lot>) => void;
+  deleteLot: (id: string) => void;
   assignLot: (lotId: string, clientId: string, salesPersonId: string, paymentPlan: {
     downPayment: number;
     monthlyPayment: number;
@@ -30,6 +31,12 @@ interface DataContextType {
 
   // Payment operations
   addPayment: (payment: Omit<Payment, 'id' | 'receiptNumber'>) => void;
+
+  // User operations
+  addUser: (user: Omit<User, 'id'>) => void;
+  updateUser: (id: string, data: Partial<User>) => void;
+  deleteUser: (id: string) => void;
+  getUserById: (id: string) => User | undefined;
 
   // Queries
   getProjectById: (id: string) => Project | undefined;
@@ -52,7 +59,7 @@ export function DataProvider({ children }: DataProviderProps) {
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [lots, setLots] = useState<Lot[]>(initialLots);
   const [payments, setPayments] = useState<Payment[]>(initialPayments);
-  const [users] = useState<User[]>(initialUsers);
+  const [users, setUsers] = useState<User[]>(initialUsers);
 
   // Project operations
   const addProject = useCallback((projectData: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -93,6 +100,10 @@ export function DataProvider({ children }: DataProviderProps) {
     setLots(prev => prev.map(l => (l.id === id ? { ...l, ...data } : l)));
   }, []);
 
+  const deleteLot = useCallback((id: string) => {
+    setLots(prev => prev.filter(l => l.id !== id));
+  }, []);
+
   const assignLot = useCallback((
     lotId: string,
     clientId: string,
@@ -128,6 +139,28 @@ export function DataProvider({ children }: DataProviderProps) {
     };
     setPayments(prev => [...prev, newPayment]);
   }, []);
+
+  // User operations
+  const addUser = useCallback((userData: Omit<User, 'id'>) => {
+    const newUser: User = {
+      ...userData,
+      id: `user-${Date.now()}`,
+    };
+    setUsers(prev => [...prev, newUser]);
+  }, []);
+
+  const updateUser = useCallback((id: string, data: Partial<User>) => {
+    setUsers(prev => prev.map(u => (u.id === id ? { ...u, ...data } : u)));
+  }, []);
+
+  const deleteUser = useCallback((id: string) => {
+    setUsers(prev => prev.filter(u => u.id !== id));
+  }, []);
+
+  const getUserById = useCallback(
+    (id: string) => users.find(u => u.id === id),
+    [users]
+  );
 
   // Queries
   const getProjectById = useCallback(
@@ -186,8 +219,13 @@ export function DataProvider({ children }: DataProviderProps) {
         deleteProject,
         addLot,
         updateLot,
+        deleteLot,
         assignLot,
         addPayment,
+        addUser,
+        updateUser,
+        deleteUser,
+        getUserById,
         getProjectById,
         getLotById,
         getLotsByProject,

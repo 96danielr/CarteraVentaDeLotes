@@ -21,12 +21,14 @@ import {
   getPaymentMethodLabel,
 } from '@/utils/formatters';
 import { Plus, CreditCard, DollarSign, Receipt, Filter } from 'lucide-react';
+import { PaymentFormModal } from '@/components/modals/PaymentFormModal';
 
 export function PaymentsPage() {
   const { payments, lots, getClientById, projects } = useData();
   const { permissions } = useAuth();
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('all');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const filteredPayments = payments
     .filter(payment => {
@@ -62,7 +64,7 @@ export function PaymentsPage() {
           </div>
         </div>
         {permissions?.canRegisterPayments && (
-          <Button className="shadow-lg">
+          <Button className="shadow-lg" onClick={() => setShowPaymentModal(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Registrar Pago
           </Button>
@@ -73,12 +75,12 @@ export function PaymentsPage() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
-              <DollarSign className="h-5 w-5 text-green-600" />
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+              <DollarSign className="h-5 w-5 text-emerald-400" />
             </div>
             <div>
-              <p className="text-lg font-bold text-green-600">{formatCurrency(totalAmount)}</p>
-              <p className="text-xs text-muted-foreground">Total</p>
+              <p className="text-lg font-bold text-emerald-400">{formatCurrency(totalAmount)}</p>
+              <p className="text-xs text-slate-400">Total</p>
             </div>
           </div>
         </Card>
@@ -106,12 +108,12 @@ export function PaymentsPage() {
         </Card>
         <Card className="p-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-              <CreditCard className="h-5 w-5 text-amber-600" />
+            <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+              <CreditCard className="h-5 w-5 text-amber-400" />
             </div>
             <div>
-              <p className="text-lg font-bold text-amber-600">{mensualidadCount}</p>
-              <p className="text-xs text-muted-foreground">Mensualidades</p>
+              <p className="text-lg font-bold text-amber-400">{mensualidadCount}</p>
+              <p className="text-xs text-slate-400">Mensualidades</p>
             </div>
           </div>
         </Card>
@@ -160,15 +162,15 @@ export function PaymentsPage() {
             <Card key={payment.id} className="p-4">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
-                    <DollarSign className="h-5 w-5 text-green-600" />
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                    <DollarSign className="h-5 w-5 text-emerald-400" />
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground">{client?.name || '-'}</p>
-                    <p className="text-sm text-muted-foreground">{formatDateShort(payment.date)}</p>
+                    <p className="font-semibold text-white">{client?.name || '-'}</p>
+                    <p className="text-sm text-slate-400">{formatDateShort(payment.date)}</p>
                   </div>
                 </div>
-                <span className="font-bold text-green-600 text-lg">
+                <span className="font-bold text-emerald-400 text-lg">
                   +{formatCurrency(payment.amount)}
                 </span>
               </div>
@@ -266,7 +268,7 @@ export function PaymentsPage() {
                       {getPaymentMethodLabel(payment.method)}
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className="font-semibold text-green-600">
+                      <span className="font-semibold text-emerald-400">
                         +{formatCurrency(payment.amount)}
                       </span>
                     </TableCell>
@@ -286,6 +288,12 @@ export function PaymentsPage() {
           )}
         </div>
       </Card>
+
+      {/* Payment Form Modal */}
+      <PaymentFormModal
+        open={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+      />
     </div>
   );
 }

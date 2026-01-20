@@ -8,6 +8,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/utils/formatters';
 import { Plus, MapPin, Eye, Edit, Trash2, FolderKanban, Building2 } from 'lucide-react';
+import { ProjectFormModal } from '@/components/modals/ProjectFormModal';
+import { ConfirmDialog } from '@/components/modals/ConfirmDialog';
+import { Project } from '@/types';
 
 const statusLabels: Record<string, string> = {
   active: 'Activo',
@@ -23,13 +26,41 @@ const statusColors: Record<string, string> = {
 
 export function ProjectsPage() {
   const { permissions } = useAuth();
-  const { projects, lots } = useData();
+  const { projects, lots, deleteProject } = useData();
   const [search, setSearch] = useState('');
+
+  // Modal states
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
   const filteredProjects = projects.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
     p.location.toLowerCase().includes(search.toLowerCase())
   );
+
+  const handleNewProject = () => {
+    setEditingProject(null);
+    setShowProjectModal(true);
+  };
+
+  const handleEditProject = (project: Project) => {
+    setEditingProject(project);
+    setShowProjectModal(true);
+  };
+
+  const handleDeleteClick = (project: Project) => {
+    setProjectToDelete(project);
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (projectToDelete) {
+      deleteProject(projectToDelete.id);
+      setProjectToDelete(null);
+    }
+  };
 
   return (
     <div className="space-y-6 stagger-children">
@@ -45,7 +76,7 @@ export function ProjectsPage() {
           </div>
         </div>
         {permissions?.canCreateProject && (
-          <Button className="shadow-lg">
+          <Button className="shadow-lg" onClick={handleNewProject}>
             <Plus className="h-4 w-4 mr-2" />
             Nuevo Proyecto
           </Button>
@@ -102,9 +133,9 @@ export function ProjectsPage() {
                     <p className="text-lg font-bold text-accent">{available}</p>
                     <p className="text-xs text-muted-foreground">Disponibles</p>
                   </div>
-                  <div className="p-2.5 bg-amber-100 rounded-xl text-center">
-                    <p className="text-lg font-bold text-amber-700">{reserved}</p>
-                    <p className="text-xs text-muted-foreground">Apartados</p>
+                  <div className="p-2.5 bg-amber-500/10 rounded-xl text-center border border-amber-500/20">
+                    <p className="text-lg font-bold text-amber-400">{reserved}</p>
+                    <p className="text-xs text-slate-400">Apartados</p>
                   </div>
                   <div className="p-2.5 bg-primary/10 rounded-xl text-center">
                     <p className="text-lg font-bold text-primary">{sold}</p>
@@ -141,12 +172,22 @@ export function ProjectsPage() {
                     </Link>
                   </Button>
                   {permissions?.canEditProject && (
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => handleEditProject(project)}
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
                   )}
                   {permissions?.canDeleteProject && (
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => handleDeleteClick(project)}
+                    >
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   )}
@@ -165,8 +206,32 @@ export function ProjectsPage() {
           </div>
           <h3 className="text-lg font-semibold mb-1">No se encontraron proyectos</h3>
           <p className="text-muted-foreground">Intenta con otros términos de búsqueda</p>
+          {permissions?.canCreateProject && (
+            <Button className="mt-4" onClick={handleNewProject}>
+              <Plus className="h-4 w-4 mr-2" />
+              Crear Primer Proyecto
+            </Button>
+          )}
         </Card>
       )}
+
+      {/* Project Form Modal */}
+      <ProjectFormModal
+        open={showProjectModal}
+        onClose={() => setShowProjectModal(false)}
+        project={editingProject}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        open={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar Proyecto"
+        description={`¿Estás seguro de que deseas eliminar el proyecto "${projectToDelete?.name}"? Esta acción no se puede deshacer.`}
+        confirmText="Eliminar"
+        variant="danger"
+      />
     </div>
   );
 }

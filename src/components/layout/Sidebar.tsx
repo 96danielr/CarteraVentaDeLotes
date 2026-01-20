@@ -10,7 +10,6 @@ import {
   FileText,
   Settings,
   X,
-  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -89,7 +88,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {/* Overlay para móvil */}
       {open && (
         <div
-          className="fixed inset-0 bg-foreground/20 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-200"
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
           onClick={onClose}
         />
       )}
@@ -103,25 +102,22 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       >
         <div className="flex flex-col h-full">
           {/* Header del Sidebar */}
-          <div className="flex items-center justify-between p-5 border-b border-white/50">
+          <div className="flex items-center justify-between p-5 border-b border-white/5">
             <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/20">
-                  <MapPin className="h-5 w-5 text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-accent rounded-full flex items-center justify-center">
-                  <Sparkles className="h-2.5 w-2.5 text-white" />
-                </div>
-              </div>
+              <img
+                src="/TERRA VALORIS LOGO TRANSPARENCIA.png"
+                alt="Terra Valoris"
+                className="w-12 h-12 object-contain"
+              />
               <div>
-                <span className="font-semibold text-lg text-foreground">Cartera</span>
-                <span className="block text-xs text-muted-foreground font-medium">Gestión de Lotes</span>
+                <span className="font-semibold text-sm text-white leading-tight">INVERSIONES</span>
+                <span className="block text-xs text-emerald-400 font-bold tracking-wide">TERRA VALORIS</span>
               </div>
             </div>
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden hover:bg-white/50"
+              className="lg:hidden text-slate-400 hover:text-white hover:bg-white/5"
               onClick={onClose}
             >
               <X className="h-5 w-5" />
@@ -129,8 +125,8 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </div>
 
           {/* Navegación */}
-          <nav className="flex-1 overflow-y-auto p-4">
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3 px-3">
+          <nav className="flex-1 overflow-y-auto p-4 scrollbar-thin">
+            <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-3 px-3">
               Menú Principal
             </p>
             <ul className="space-y-1">
@@ -143,8 +139,8 @@ export function Sidebar({ open, onClose }: SidebarProps) {
                       cn(
                         'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200',
                         isActive
-                          ? 'bg-gradient-to-r from-primary to-primary/80 text-white shadow-md shadow-primary/20'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-white/60'
+                          ? 'bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-lg shadow-emerald-500/5'
+                          : 'text-slate-400 hover:text-white hover:bg-white/5'
                       )
                     }
                   >
@@ -157,11 +153,17 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </nav>
 
           {/* Footer del Sidebar */}
-          <div className="p-4 border-t border-white/50">
-            <div className="glass rounded-xl p-3 text-center">
-              <p className="text-xs text-muted-foreground">
-                POC <span className="font-semibold text-primary">v0.1.0</span>
-              </p>
+          <div className="p-4 border-t border-white/5">
+            <div className="glass rounded-xl p-3">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                  <span className="text-emerald-400 text-xs font-bold">TV</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-medium text-slate-300 truncate">Terra Valoris</p>
+                  <p className="text-[10px] text-slate-500">POC v0.1.0</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,16 +1,17 @@
-// Formatear moneda MXN
+// Formatear moneda COP
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('es-MX', {
+  return new Intl.NumberFormat('es-CO', {
     style: 'currency',
-    currency: 'MXN',
-    minimumFractionDigits: 2,
+    currency: 'COP',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(amount);
 }
 
 // Formatear fecha
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat('es-MX', {
+  return new Intl.DateTimeFormat('es-CO', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -20,7 +21,7 @@ export function formatDate(dateString: string): string {
 // Formatear fecha corta
 export function formatDateShort(dateString: string): string {
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat('es-MX', {
+  return new Intl.DateTimeFormat('es-CO', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',
@@ -29,7 +30,7 @@ export function formatDateShort(dateString: string): string {
 
 // Formatear área en m2
 export function formatArea(area: number): string {
-  return `${area.toLocaleString('es-MX')} m²`;
+  return `${area.toLocaleString('es-CO')} m²`;
 }
 
 // Formatear porcentaje
@@ -79,9 +80,9 @@ export function getLotStatusLabel(status: 'available' | 'reserved' | 'sold'): st
 // Color del status del lote
 export function getLotStatusColor(status: 'available' | 'reserved' | 'sold'): string {
   const colors = {
-    available: 'bg-green-100 text-green-800',
-    reserved: 'bg-yellow-100 text-yellow-800',
-    sold: 'bg-red-100 text-red-800',
+    available: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+    reserved: 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
+    sold: 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
   };
   return colors[status];
 }

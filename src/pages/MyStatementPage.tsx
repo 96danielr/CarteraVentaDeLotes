@@ -141,13 +141,13 @@ export function MyStatementPage() {
             <Card>
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground">Total Pagado</p>
-                <p className="text-2xl font-bold text-green-600">{formatCurrency(statement.totalPaid)}</p>
+                <p className="text-2xl font-bold text-emerald-400">{formatCurrency(statement.totalPaid)}</p>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="pt-6">
                 <p className="text-sm text-muted-foreground">Saldo Pendiente</p>
-                <p className="text-2xl font-bold text-orange-600">{formatCurrency(statement.remaining)}</p>
+                <p className="text-2xl font-bold text-amber-400">{formatCurrency(statement.remaining)}</p>
               </CardContent>
             </Card>
             <Card>
@@ -167,9 +167,9 @@ export function MyStatementPage() {
                   {statement.monthsPaid} de {statement.lot.totalMonths} mensualidades
                 </span>
               </div>
-              <div className="h-4 bg-gray-100 rounded-full overflow-hidden">
+              <div className="h-4 bg-white/10 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-green-400 to-green-600 transition-all"
+                  className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all"
                   style={{ width: `${Math.min(statement.paidPercentage, 100)}%` }}
                 />
               </div>
@@ -204,7 +204,7 @@ export function MyStatementPage() {
                         <Badge variant="outline">{getPaymentTypeLabel(payment.type)}</Badge>
                       </TableCell>
                       <TableCell>{getPaymentMethodLabel(payment.method)}</TableCell>
-                      <TableCell className="text-right font-medium text-green-600">
+                      <TableCell className="text-right font-medium text-emerald-400">
                         {formatCurrency(payment.amount)}
                       </TableCell>
                     </TableRow>

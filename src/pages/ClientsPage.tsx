@@ -83,7 +83,7 @@ export function ClientsPage() {
                   {clientLots.map(lot => {
                     const project = projects.find(p => p.id === lot.projectId);
                     return (
-                      <div key={lot.id} className="ml-6 p-2 rounded-lg bg-white/50 border border-border/50 text-sm">
+                      <div key={lot.id} className="ml-6 p-2 rounded-lg bg-white/5 border border-white/10 text-sm">
                         <div className="flex items-center justify-between">
                           <span>
                             <span className="font-medium">{lot.number}</span>
@@ -100,12 +100,12 @@ export function ClientsPage() {
 
                 {/* Payment Info */}
                 <div className="flex items-center gap-2 text-sm mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                    <CreditCard className="h-4 w-4 text-green-600" />
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                    <CreditCard className="h-4 w-4 text-emerald-400" />
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Pagado: </span>
-                    <span className="font-semibold text-green-600">{formatCurrency(totalPaid)}</span>
+                    <span className="text-slate-400">Pagado: </span>
+                    <span className="font-semibold text-emerald-400">{formatCurrency(totalPaid)}</span>
                   </div>
                 </div>
 

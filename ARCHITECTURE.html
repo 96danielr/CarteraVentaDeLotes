@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura - Sistema de Gestión de Cartera Inmobiliaria</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #16a34a;
+            --warning: #ca8a04;
+            --danger: #dc2626;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--gray-50);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .alert {
+            background: #fef3c7;
+            border-left: 4px solid var(--warning);
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .alert strong {
+            color: var(--warning);
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        nav a {
+            display: block;
+            padding: 0.5rem 1rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        nav a:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+
+        /* Sections */
+        section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        h3 {
+            color: var(--gray-700);
+            font-size: 1.25rem;
+            margin: 1.5rem 0 1rem;
+        }
+
+        h4 {
+            color: var(--gray-600);
+            font-size: 1rem;
+            margin: 1rem 0 0.5rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--gray-600);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        th {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        tr:hover {
+            background: var(--gray-50);
+        }
+
+        /* Code blocks */
+        pre {
+            background: var(--gray-900);
+            color: #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        code {
+            background: var(--gray-100);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.875rem;
+            color: var(--primary-dark);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Hierarchy diagram */
+        .hierarchy {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .hierarchy-item {
+            display: inline-block;
+            background: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .hierarchy-arrow {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+        }
+
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-warning { background: #fef9c3; color: #854d0e; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-info { background: #dbeafe; color: #1e40af; }
+        .badge-gray { background: var(--gray-200); color: var(--gray-700); }
+
+        /* Check marks */
+        .check { color: var(--success); }
+        .cross { color: var(--danger); }
+
+        /* Cards grid */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .card h4 {
+            margin-top: 0;
+            color: var(--gray-800);
+        }
+
+        .card p {
+            font-size: 0.875rem;
+            margin-bottom: 0;
+        }
+
+        /* Role colors */
+        .role-master { border-left: 4px solid #9333ea; }
+        .role-admin { border-left: 4px solid var(--primary); }
+        .role-comercial { border-left: 4px solid var(--success); }
+        .role-cliente { border-left: 4px solid var(--gray-400); }
+
+        /* Flow diagrams */
+        .flow {
+            background: var(--gray-50);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .flow-number {
+            background: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .flow-content {
+            flex: 1;
+            padding-top: 0.25rem;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--gray-600);
+        }
+
+        /* Roadmap */
+        .roadmap-phase {
+            border-left: 3px solid var(--gray-300);
+            padding-left: 1.5rem;
+            margin-left: 0.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .roadmap-phase::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--gray-300);
+        }
+
+        .roadmap-phase.active::before {
+            background: var(--primary);
+        }
+
+        .roadmap-phase.completed::before {
+            background: var(--success);
+        }
+
+        .roadmap-phase h4 {
+            margin-top: 0;
+        }
+
+        .task-done {
+            color: var(--success);
+            text-decoration: line-through;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            header {
+                padding: 2rem 1rem;
+            }
+
+            header h1 {
+                font-size: 1.75rem;
+            }
+
+            nav {
+                position: static;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            .hierarchy {
+                padding: 1rem;
+            }
+
+            .hierarchy-item {
+                display: block;
+                margin: 0.5rem auto;
+            }
+
+            .hierarchy-arrow {
+                display: block;
+                margin: 0.25rem 0;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Sistema de Gestión de Cartera Inmobiliaria</h1>
+            <p>Documento de Arquitectura - Referencia Obligatoria</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="alert">
+            <strong>DOCUMENTO DE REFERENCIA OBLIGATORIO</strong><br>
+            Este documento define la arquitectura oficial del sistema. Toda implementación debe alinearse con estas especificaciones.
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#vision">Vision</a></li>
+                <li><a href="#jerarquia">Jerarquía</a></li>
+                <li><a href="#ventas">Ventas</a></li>
+                <li><a href="#usuarios">Usuarios</a></li>
+                <li><a href="#comisiones">Comisiones</a></li>
+                <li><a href="#alertas">Alertas</a></li>
+                <li><a href="#reportes">Reportes</a></li>
+                <li><a href="#tecnica">Técnica</a></li>
+                <li><a href="#flujos">Flujos</a></li>
+                <li><a href="#calculos">Cálculos</a></li>
+                <li><a href="#seguridad">Seguridad</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+            </ul>
+        </nav>
+
+        <!-- 1. VISIÓN -->
+        <section id="vision">
+            <h2>1. Visión del Producto</h2>
+            <p>Sistema de gestión integral para desarrollos inmobiliarios de lotes, que permite:</p>
+            <ul>
+                <li>Administrar proyectos, etapas, manzanas y lotes</li>
+                <li>Gestionar ventas con planes de pago flexibles</li>
+                <li>Dar seguimiento a cobranza y morosidad</li>
+                <li>Calcular y rastrear comisiones de vendedores</li>
+                <li>Ofrecer portal de autoservicio para clientes</li>
+            </ul>
+            <div class="card" style="margin-top: 1rem;">
+                <h4>Modelo de Negocio</h4>
+                <p><span class="badge badge-info">Single-tenant</span> Una instalación por empresa</p>
+            </div>
+        </section>
+
+        <!-- 2. JERARQUÍA -->
+        <section id="jerarquia">
+            <h2>2. Jerarquía de Entidades</h2>
+
+            <div class="hierarchy">
+                <span class="hierarchy-item">EMPRESA (tenant)</span>
+                <span class="hierarchy-arrow">→</span>
+                <span class="hierarchy-item">PROYECTO</span>
+                <span class="hierarchy-arrow">→</span>
+                <span class="hierarchy-item">ETAPA</span>
+                <span class="hierarchy-arrow">→</span>
+                <span class="hierarchy-item">MANZANA</span>
+                <span class="hierarchy-arrow">→</span>
+                <span class="hierarchy-item">LOTE</span>
+            </div>
+
+            <h3>2.1 Proyecto</h3>
+            <p>Desarrollo inmobiliario completo (ej: "Residencial Los Álamos").</p>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>name</code></td><td>string</td><td>Nombre del proyecto</td></tr>
+                    <tr><td><code>description</code></td><td>string</td><td>Descripción general</td></tr>
+                    <tr><td><code>location</code></td><td>string</td><td>Ubicación/dirección</td></tr>
+                    <tr><td><code>coordinates</code></td><td>{lat, lng}</td><td>Geolocalización (opcional)</td></tr>
+                    <tr><td><code>status</code></td><td>enum</td><td><span class="badge badge-info">planning</span> <span class="badge badge-success">active</span> <span class="badge badge-warning">sold_out</span> <span class="badge badge-gray">completed</span></td></tr>
+                    <tr><td><code>defaultPricePerM2</code></td><td>number</td><td>Precio base por m²</td></tr>
+                    <tr><td><code>images</code></td><td>string[]</td><td>Galería de imágenes</td></tr>
+                    <tr><td><code>documents</code></td><td>Document[]</td><td>Planos, permisos, etc.</td></tr>
+                </tbody>
+            </table>
+
+            <h3>2.2 Etapa</h3>
+            <p>Fase de desarrollo dentro de un proyecto (ej: "Etapa 1", "Fase Norte").</p>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>projectId</code></td><td>string</td><td>FK al proyecto</td></tr>
+                    <tr><td><code>name</code></td><td>string</td><td>Nombre de la etapa</td></tr>
+                    <tr><td><code>status</code></td><td>enum</td><td><span class="badge badge-gray">planning</span> <span class="badge badge-info">in_development</span> <span class="badge badge-success">selling</span> <span class="badge badge-warning">sold_out</span></td></tr>
+                    <tr><td><code>pricePerM2</code></td><td>number</td><td>Precio por m² (override)</td></tr>
+                    <tr><td><code>startDate</code></td><td>date</td><td>Fecha inicio de ventas</td></tr>
+                    <tr><td><code>estimatedCompletion</code></td><td>date</td><td>Fecha estimada de entrega</td></tr>
+                </tbody>
+            </table>
+
+            <h3>2.3 Manzana</h3>
+            <p>Agrupación física de lotes (ej: "Manzana A", "Manzana 15").</p>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>stageId</code></td><td>string</td><td>FK a la etapa</td></tr>
+                    <tr><td><code>name</code></td><td>string</td><td>Identificador (A, B, 1, 2)</td></tr>
+                    <tr><td><code>totalLots</code></td><td>number</td><td>Cantidad de lotes</td></tr>
+                    <tr><td><code>polygon</code></td><td>coordinates[]</td><td>Polígono del área (mapas)</td></tr>
+                </tbody>
+            </table>
+
+            <h3>2.4 Lote</h3>
+            <p>Unidad de venta individual.</p>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>blockId</code></td><td>string</td><td>FK a la manzana</td></tr>
+                    <tr><td><code>number</code></td><td>string</td><td>Número de lote</td></tr>
+                    <tr><td><code>area</code></td><td>number</td><td>Superficie en m²</td></tr>
+                    <tr><td><code>pricePerM2</code></td><td>number</td><td>Precio por m² (override)</td></tr>
+                    <tr><td><code>totalPrice</code></td><td>number</td><td>Precio total</td></tr>
+                    <tr><td><code>status</code></td><td>enum</td><td>Estado del lote</td></tr>
+                    <tr><td><code>lotType</code></td><td>enum</td><td>regular, corner, irregular, premium</td></tr>
+                    <tr><td><code>dimensions</code></td><td>{front, depth}</td><td>Medidas frente x fondo</td></tr>
+                </tbody>
+            </table>
+
+            <h4>Estados del Lote</h4>
+            <div class="cards">
+                <div class="card">
+                    <span class="badge badge-success">available</span>
+                    <p>Disponible para venta</p>
+                </div>
+                <div class="card">
+                    <span class="badge badge-warning">reserved</span>
+                    <p>Apartado con anticipo, en proceso</p>
+                </div>
+                <div class="card">
+                    <span class="badge badge-danger">sold</span>
+                    <p>Vendido, contrato firmado</p>
+                </div>
+                <div class="card">
+                    <span class="badge badge-gray">blocked</span>
+                    <p>No disponible (legal, técnico)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SISTEMA DE VENTAS -->
+        <section id="ventas">
+            <h2>3. Sistema de Ventas</h2>
+
+            <h3>3.1 Venta (Sale)</h3>
+            <p>Representa la transacción de venta de un lote.</p>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>lotId</code></td><td>string</td><td>FK al lote</td></tr>
+                    <tr><td><code>clientId</code></td><td>string</td><td>FK al cliente</td></tr>
+                    <tr><td><code>sellerId</code></td><td>string</td><td>FK al vendedor</td></tr>
+                    <tr><td><code>paymentPlanId</code></td><td>string</td><td>FK al plan de pago</td></tr>
+                    <tr><td><code>saleDate</code></td><td>date</td><td>Fecha de la venta</td></tr>
+                    <tr><td><code>agreedPrice</code></td><td>number</td><td>Precio acordado</td></tr>
+                    <tr><td><code>status</code></td><td>enum</td><td><span class="badge badge-success">active</span> <span class="badge badge-info">completed</span> <span class="badge badge-danger">cancelled</span></td></tr>
+                    <tr><td><code>contractNumber</code></td><td>string</td><td>Número de contrato</td></tr>
+                </tbody>
+            </table>
+
+            <h3>3.2 Plan de Pago (PaymentPlan)</h3>
+            <p>Esquema de financiamiento configurable.</p>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>name</code></td><td>string</td><td>Nombre del plan</td></tr>
+                    <tr><td><code>downPaymentPercent</code></td><td>number</td><td>% de enganche requerido</td></tr>
+                    <tr><td><code>downPaymentFixed</code></td><td>number</td><td>Monto fijo (alternativo)</td></tr>
+                    <tr><td><code>financingMonths</code></td><td>number</td><td>Plazo en meses</td></tr>
+                    <tr><td><code>interestRate</code></td><td>number</td><td>Tasa mensual (0 = sin intereses)</td></tr>
+                    <tr><td><code>annualPayments</code></td><td>AnnualPayment[]</td><td>Pagos anuales obligatorios</td></tr>
+                    <tr><td><code>isActive</code></td><td>boolean</td><td>Disponible para nuevas ventas</td></tr>
+                </tbody>
+            </table>
+
+            <h3>3.3 Pago (Payment)</h3>
+            <p>Registro de cada transacción de pago.</p>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>saleId</code></td><td>string</td><td>FK a la venta</td></tr>
+                    <tr><td><code>type</code></td><td>enum</td><td>Tipo de pago</td></tr>
+                    <tr><td><code>scheduledDate</code></td><td>date</td><td>Fecha programada</td></tr>
+                    <tr><td><code>paidDate</code></td><td>date</td><td>Fecha real de pago</td></tr>
+                    <tr><td><code>scheduledAmount</code></td><td>number</td><td>Monto programado</td></tr>
+                    <tr><td><code>paidAmount</code></td><td>number</td><td>Monto pagado</td></tr>
+                    <tr><td><code>status</code></td><td>enum</td><td><span class="badge badge-gray">pending</span> <span class="badge badge-success">paid</span> <span class="badge badge-warning">partial</span> <span class="badge badge-danger">overdue</span></td></tr>
+                    <tr><td><code>method</code></td><td>enum</td><td>cash, transfer, card, check</td></tr>
+                    <tr><td><code>receiptNumber</code></td><td>string</td><td>Número de recibo</td></tr>
+                </tbody>
+            </table>
+
+            <h4>Tipos de Pago</h4>
+            <div class="cards">
+                <div class="card">
+                    <h4><code>down_payment</code></h4>
+                    <p>Enganche inicial</p>
+                </div>
+                <div class="card">
+                    <h4><code>monthly</code></h4>
+                    <p>Mensualidad regular</p>
+                </div>
+                <div class="card">
+                    <h4><code>annual</code></h4>
+                    <p>Pago anual obligatorio</p>
+                </div>
+                <div class="card">
+                    <h4><code>extra</code></h4>
+                    <p>Pago adelantado (abona a capital)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. USUARIOS Y ROLES -->
+        <section id="usuarios">
+            <h2>4. Sistema de Usuarios y Roles</h2>
+
+            <h3>4.1 Roles del Sistema</h3>
+            <div class="cards">
+                <div class="card role-master">
+                    <h4>Super Admin <span class="badge badge-info">master</span></h4>
+                    <p>Control total, configuración del sistema</p>
+                </div>
+                <div class="card role-admin">
+                    <h4>Administrador <span class="badge badge-info">admin</span></h4>
+                    <p>Gestión operativa, sin eliminación</p>
+                </div>
+                <div class="card role-comercial">
+                    <h4>Comercial/Ventas <span class="badge badge-info">comercial</span></h4>
+                    <p>Operaciones de venta y cobranza</p>
+                </div>
+                <div class="card role-cliente">
+                    <h4>Cliente <span class="badge badge-info">cliente</span></h4>
+                    <p>Solo visualización de su información</p>
+                </div>
+            </div>
+
+            <h3>4.2 Matriz de Permisos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Permiso</th>
+                        <th>master</th>
+                        <th>admin</th>
+                        <th>comercial</th>
+                        <th>cliente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="5"><strong>PROYECTOS</strong></td></tr>
+                    <tr>
+                        <td>Ver todos los proyectos</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Crear proyecto</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Editar proyecto</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Eliminar proyecto</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr><td colspan="5"><strong>LOTES</strong></td></tr>
+                    <tr>
+                        <td>Ver inventario completo</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Modificar lotes</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Reservar/Vender lotes</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Cancelar ventas</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr><td colspan="5"><strong>PAGOS</strong></td></tr>
+                    <tr>
+                        <td>Registrar pagos</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Modificar pagos</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Eliminar pagos</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr><td colspan="5"><strong>COMISIONES</strong></td></tr>
+                    <tr>
+                        <td>Ver todas las comisiones</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Ver comisiones propias</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Marcar como pagadas</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr><td colspan="5"><strong>CONFIGURACIÓN</strong></td></tr>
+                    <tr>
+                        <td>Gestión de usuarios</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Planes de pago</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                    <tr>
+                        <td>Configuración general</td>
+                        <td class="check">✓</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>4.3 Usuario (User)</h3>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>email</code></td><td>string</td><td>Email (único, login)</td></tr>
+                    <tr><td><code>name</code></td><td>string</td><td>Nombre completo</td></tr>
+                    <tr><td><code>phone</code></td><td>string</td><td>Teléfono</td></tr>
+                    <tr><td><code>role</code></td><td>enum</td><td>Rol del sistema</td></tr>
+                    <tr><td><code>isActive</code></td><td>boolean</td><td>Cuenta activa</td></tr>
+                    <tr><td><code>assignedProjects</code></td><td>string[]</td><td>Proyectos asignados (comercial)</td></tr>
+                </tbody>
+            </table>
+
+            <h3>4.4 Cliente - Datos Adicionales</h3>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>rfc</code></td><td>string</td><td>RFC para facturación</td></tr>
+                    <tr><td><code>curp</code></td><td>string</td><td>CURP</td></tr>
+                    <tr><td><code>address</code></td><td>Address</td><td>Dirección completa</td></tr>
+                    <tr><td><code>birthDate</code></td><td>date</td><td>Fecha de nacimiento</td></tr>
+                    <tr><td><code>occupation</code></td><td>string</td><td>Ocupación</td></tr>
+                    <tr><td><code>references</code></td><td>Reference[]</td><td>Referencias personales</td></tr>
+                    <tr><td><code>documents</code></td><td>Document[]</td><td>INE, comprobantes, etc.</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 5. COMISIONES -->
+        <section id="comisiones">
+            <h2>5. Sistema de Comisiones</h2>
+
+            <h3>5.1 Esquema de Comisión</h3>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>id</code></td><td>string</td><td>Identificador único</td></tr>
+                    <tr><td><code>name</code></td><td>string</td><td>Nombre del esquema</td></tr>
+                    <tr><td><code>type</code></td><td>enum</td><td>percentage, fixed, tiered</td></tr>
+                    <tr><td><code>basePercentage</code></td><td>number</td><td>% base sobre precio de venta</td></tr>
+                    <tr><td><code>paymentTrigger</code></td><td>enum</td><td>on_sale, on_down_payment, on_completion</td></tr>
+                </tbody>
+            </table>
+
+            <h3>5.2 Comisión</h3>
+            <table>
+                <thead>
+                    <tr><th>Campo</th><th>Tipo</th><th>Descripción</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>saleId</code></td><td>string</td><td>FK a la venta</td></tr>
+                    <tr><td><code>sellerId</code></td><td>string</td><td>FK al vendedor</td></tr>
+                    <tr><td><code>commissionAmount</code></td><td>number</td><td>Monto calculado</td></tr>
+                    <tr><td><code>status</code></td><td>enum</td><td><span class="badge badge-gray">pending</span> <span class="badge badge-info">approved</span> <span class="badge badge-success">paid</span> <span class="badge badge-danger">cancelled</span></td></tr>
+                    <tr><td><code>approvedBy</code></td><td>string</td><td>Usuario que aprobó</td></tr>
+                    <tr><td><code>paidAt</code></td><td>date</td><td>Fecha de pago</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 6. ALERTAS -->
+        <section id="alertas">
+            <h2>6. Sistema de Alertas y Notificaciones</h2>
+
+            <h3>6.1 Tipos de Alertas</h3>
+            <table>
+                <thead>
+                    <tr><th>Tipo</th><th>Destinatario</th><th>Trigger</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>payment_reminder</code></td><td>Cliente</td><td>5 días antes del vencimiento</td></tr>
+                    <tr><td><code>payment_due</code></td><td>Cliente</td><td>Día del vencimiento</td></tr>
+                    <tr><td><code>payment_overdue</code></td><td>Cliente, Admin</td><td>1, 7, 15, 30 días de atraso</td></tr>
+                    <tr><td><code>payment_received</code></td><td>Cliente</td><td>Al registrar pago</td></tr>
+                    <tr><td><code>sale_completed</code></td><td>Cliente, Vendedor</td><td>Al completar venta</td></tr>
+                    <tr><td><code>commission_approved</code></td><td>Vendedor</td><td>Al aprobar comisión</td></tr>
+                </tbody>
+            </table>
+
+            <h3>6.2 Canales de Notificación</h3>
+            <div class="cards">
+                <div class="card">
+                    <h4>In-App</h4>
+                    <p>Notificaciones dentro del sistema</p>
+                </div>
+                <div class="card">
+                    <h4>Email</h4>
+                    <p>Correos electrónicos automáticos</p>
+                </div>
+                <div class="card">
+                    <h4>SMS</h4>
+                    <p>Mensajes de texto (futuro)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. REPORTES -->
+        <section id="reportes">
+            <h2>7. Reportes y Exportación</h2>
+
+            <h3>7.1 Reportes Disponibles</h3>
+            <table>
+                <thead>
+                    <tr><th>Reporte</th><th>Descripción</th><th>Roles</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Inventario de lotes</td><td>Disponibilidad por proyecto/etapa/manzana</td><td>admin, master</td></tr>
+                    <tr><td>Ventas del período</td><td>Ventas por fecha, vendedor, proyecto</td><td>admin, master</td></tr>
+                    <tr><td>Cobranza</td><td>Pagos recibidos, pendientes, vencidos</td><td>admin, master</td></tr>
+                    <tr><td>Estado de cuenta</td><td>Detalle de cliente individual</td><td>todos</td></tr>
+                    <tr><td>Morosidad</td><td>Clientes con pagos atrasados</td><td>admin, master</td></tr>
+                    <tr><td>Comisiones</td><td>Comisiones por vendedor/período</td><td>admin, master</td></tr>
+                    <tr><td>Proyección de ingresos</td><td>Pagos esperados próximos meses</td><td>admin, master</td></tr>
+                    <tr><td>Comparativo de ventas</td><td>Mes actual vs anterior, año vs año</td><td>admin, master</td></tr>
+                </tbody>
+            </table>
+
+            <h3>7.2 Formatos de Exportación</h3>
+            <div class="cards">
+                <div class="card">
+                    <h4>PDF</h4>
+                    <p>Estados de cuenta, recibos, contratos</p>
+                </div>
+                <div class="card">
+                    <h4>Excel</h4>
+                    <p>Reportes tabulares, datos para análisis</p>
+                </div>
+                <div class="card">
+                    <h4>CSV</h4>
+                    <p>Exportación de datos masiva</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. ARQUITECTURA TÉCNICA -->
+        <section id="tecnica">
+            <h2>8. Arquitectura Técnica</h2>
+
+            <h3>8.1 Stack Tecnológico</h3>
+            <div class="cards">
+                <div class="card">
+                    <h4>Frontend (actual)</h4>
+                    <ul style="margin: 0; padding-left: 1.25rem;">
+                        <li>React 18 + TypeScript</li>
+                        <li>Vite (bundler)</li>
+                        <li>Tailwind CSS + shadcn/ui</li>
+                        <li>React Router v6</li>
+                        <li>Context API</li>
+                        <li>@react-pdf/renderer</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Backend (futuro - Supabase)</h4>
+                    <ul style="margin: 0; padding-left: 1.25rem;">
+                        <li>PostgreSQL</li>
+                        <li>Supabase Auth</li>
+                        <li>Supabase Storage</li>
+                        <li>Row Level Security</li>
+                        <li>Edge Functions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>8.2 Estructura de Carpetas</h3>
+            <pre><code>src/
+├── components/
+│   ├── ui/              # Componentes base (shadcn/ui)
+│   ├── layout/          # Layout, Sidebar, Header
+│   ├── auth/            # ProtectedRoute, LoginForm
+│   ├── projects/        # Componentes de proyectos
+│   ├── lots/            # Componentes de lotes
+│   ├── sales/           # Componentes de ventas
+│   ├── payments/        # Componentes de pagos
+│   ├── clients/         # Componentes de clientes
+│   ├── commissions/     # Componentes de comisiones
+│   ├── reports/         # Componentes de reportes
+│   └── notifications/   # Componentes de alertas
+├── contexts/
+│   ├── AuthContext.tsx
+│   ├── DataContext.tsx
+│   └── NotificationContext.tsx
+├── hooks/
+├── pages/
+│   ├── admin/
+│   ├── sales/
+│   └── client/
+├── services/
+│   └── supabase/
+├── types/
+├── utils/
+├── data/                # Mock data (desarrollo)
+└── lib/</code></pre>
+
+            <h3>8.3 Convenciones de Código</h3>
+            <table>
+                <tbody>
+                    <tr><td>Path alias</td><td><code>@/</code> → <code>src/</code></td></tr>
+                    <tr><td>Componentes</td><td>PascalCase, un componente por archivo</td></tr>
+                    <tr><td>Hooks</td><td>camelCase, prefijo <code>use</code></td></tr>
+                    <tr><td>Tipos</td><td>PascalCase, interfaces preferidas</td></tr>
+                    <tr><td>Archivos</td><td>kebab-case para archivos</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 9. FLUJOS -->
+        <section id="flujos">
+            <h2>9. Flujos de Negocio Principales</h2>
+
+            <h3>9.1 Flujo de Venta</h3>
+            <div class="flow">
+                <div class="flow-step">
+                    <span class="flow-number">1</span>
+                    <div class="flow-content">Cliente interesado contacta</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">2</span>
+                    <div class="flow-content">Vendedor selecciona lote disponible</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">3</span>
+                    <div class="flow-content">Vendedor selecciona plan de pago</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">4</span>
+                    <div class="flow-content">Sistema calcula: enganche, mensualidades, pagos anuales, calendario</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">5</span>
+                    <div class="flow-content">Cliente paga enganche</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">6</span>
+                    <div class="flow-content">Lote cambia a <span class="badge badge-warning">reserved</span></div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">7</span>
+                    <div class="flow-content">Se genera contrato</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">8</span>
+                    <div class="flow-content">Lote cambia a <span class="badge badge-danger">sold</span></div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">9</span>
+                    <div class="flow-content">Se activa calendario de pagos</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">10</span>
+                    <div class="flow-content">Se calcula comisión del vendedor</div>
+                </div>
+            </div>
+
+            <h3>9.2 Flujo de Cobranza</h3>
+            <div class="flow">
+                <div class="flow-step">
+                    <span class="flow-number">1</span>
+                    <div class="flow-content">Sistema verifica pagos del día</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">2</span>
+                    <div class="flow-content">Pagos próximos → Notificación recordatorio</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">3</span>
+                    <div class="flow-content">Pagos vencidos → Alerta de morosidad</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">4</span>
+                    <div class="flow-content">Vendedor/Admin registra pago</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">5</span>
+                    <div class="flow-content">Sistema actualiza estado, saldo y progreso</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">6</span>
+                    <div class="flow-content">Se genera recibo PDF</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">7</span>
+                    <div class="flow-content">Notificación al cliente</div>
+                </div>
+            </div>
+
+            <h3>9.3 Flujo de Morosidad</h3>
+            <div class="flow">
+                <div class="flow-step">
+                    <span class="flow-number">1</span>
+                    <div class="flow-content">Pago no recibido en fecha programada</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">2</span>
+                    <div class="flow-content"><strong>Día 1:</strong> Alerta interna + notificación cliente</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">3</span>
+                    <div class="flow-content"><strong>Día 7:</strong> Segunda notificación</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">4</span>
+                    <div class="flow-content"><strong>Día 15:</strong> Escalamiento a admin</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">5</span>
+                    <div class="flow-content"><strong>Día 30:</strong> Marcado como moroso crítico</div>
+                </div>
+                <div class="flow-step">
+                    <span class="flow-number">6</span>
+                    <div class="flow-content">Acción manual (llamada, visita, etc.)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. CÁLCULOS -->
+        <section id="calculos">
+            <h2>10. Cálculos Financieros</h2>
+
+            <h3>10.1 Cálculo de Plan de Pago</h3>
+            <pre><code>function calculatePaymentPlan(
+  totalPrice: number,
+  plan: PaymentPlan,
+  startDate: Date
+): ScheduledPayment[] {
+  // 1. Calcular enganche
+  const downPayment = plan.downPaymentFixed
+    || (totalPrice * plan.downPaymentPercent / 100);
+
+  // 2. Saldo a financiar
+  const financeAmount = totalPrice - downPayment;
+
+  // 3. Mensualidad (con o sin intereses)
+  const monthlyPayment = plan.interestRate > 0
+    ? calculateAmortization(financeAmount, plan.interestRate, plan.financingMonths)
+    : financeAmount / plan.financingMonths;
+
+  // 4. Generar calendario de pagos
+  // ... enganche + mensualidades + anuales
+
+  return payments;
+}</code></pre>
+
+            <h3>10.2 Estado de Cuenta</h3>
+            <pre><code>interface AccountStatement {
+  client: Client;
+  sale: Sale;
+  lot: Lot;
+  project: Project;
+
+  // Montos
+  totalPrice: number;
+  downPaymentAmount: number;
+  totalPaid: number;
+  totalPending: number;
+
+  // Progreso
+  paidPercentage: number;
+  paymentsCompleted: number;
+  paymentsRemaining: number;
+
+  // Próximo pago
+  nextPayment: {
+    date: Date;
+    amount: number;
+    type: PaymentType;
+  };
+
+  // Estado de morosidad
+  isOverdue: boolean;
+  daysOverdue: number;
+  overdueAmount: number;
+
+  // Historial
+  payments: Payment[];
+}</code></pre>
+        </section>
+
+        <!-- 11. SEGURIDAD -->
+        <section id="seguridad">
+            <h2>11. Consideraciones de Seguridad</h2>
+            <ul>
+                <li>Autenticación obligatoria para todas las rutas excepto login</li>
+                <li>Permisos verificados en frontend Y backend (Row Level Security)</li>
+                <li>Tokens JWT con expiración</li>
+                <li>Logs de auditoría para operaciones críticas</li>
+                <li>Encriptación de datos sensibles (RFC, CURP)</li>
+                <li>Validación de inputs en cliente y servidor</li>
+            </ul>
+        </section>
+
+        <!-- 12. ROADMAP -->
+        <section id="roadmap">
+            <h2>12. Roadmap de Implementación</h2>
+
+            <div class="roadmap-phase active">
+                <h4>Fase 1: Core <span class="badge badge-info">En progreso</span></h4>
+                <ul>
+                    <li class="task-done">Estructura base del proyecto</li>
+                    <li class="task-done">Sistema de autenticación mock</li>
+                    <li class="task-done">CRUD de proyectos básico</li>
+                    <li>Jerarquía completa: Etapas y Manzanas</li>
+                    <li>Planes de pago configurables</li>
+                    <li>Modelo de ventas completo</li>
+                </ul>
+            </div>
+
+            <div class="roadmap-phase">
+                <h4>Fase 2: Ventas y Cobranza</h4>
+                <ul>
+                    <li>Flujo de venta completo</li>
+                    <li>Calendario de pagos automático</li>
+                    <li>Registro de pagos</li>
+                    <li>Estados de cuenta</li>
+                    <li>Generación de recibos PDF</li>
+                </ul>
+            </div>
+
+            <div class="roadmap-phase">
+                <h4>Fase 3: Portal Cliente</h4>
+                <ul>
+                    <li>Dashboard del cliente</li>
+                    <li>Visualización de estado de cuenta</li>
+                    <li>Historial de pagos</li>
+                    <li>Descarga de documentos</li>
+                    <li>Sistema de notificaciones</li>
+                </ul>
+            </div>
+
+            <div class="roadmap-phase">
+                <h4>Fase 4: Comisiones y Reportes</h4>
+                <ul>
+                    <li>Configuración de esquemas de comisión</li>
+                    <li>Cálculo automático de comisiones</li>
+                    <li>Reportes avanzados</li>
+                    <li>Exportación Excel/PDF</li>
+                    <li>Dashboard de métricas</li>
+                </ul>
+            </div>
+
+            <div class="roadmap-phase">
+                <h4>Fase 5: Integración Backend</h4>
+                <ul>
+                    <li>Migración a Supabase</li>
+                    <li>Row Level Security</li>
+                    <li>Notificaciones por email</li>
+                    <li>Storage para documentos</li>
+                </ul>
+            </div>
+        </section>
+
+        <footer>
+            <p>Sistema de Gestión de Cartera Inmobiliaria - Documento de Arquitectura</p>
+            <p>Última actualización: Enero 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

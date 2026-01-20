@@ -11,7 +11,11 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       <div className="relative group">
         <select
           className={cn(
-            "flex h-11 w-full cursor-pointer appearance-none rounded-xl border-0 bg-white/80 px-4 py-2.5 pr-10 text-sm font-medium text-foreground shadow-sm ring-1 ring-inset ring-border/60 transition-all duration-200 hover:bg-white hover:ring-border focus-visible:outline-none focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:shadow-[0_0_0_4px_hsl(234_89%_64%/0.1)] disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-11 w-full cursor-pointer appearance-none rounded-xl border-0 bg-white/5 px-4 py-2.5 pr-10 text-sm font-medium text-white shadow-sm ring-1 ring-inset ring-white/10 transition-all duration-200",
+            "hover:bg-white/10 hover:ring-white/20",
+            "focus-visible:outline-none focus-visible:bg-white/10 focus-visible:ring-2 focus-visible:ring-emerald-500/50 focus-visible:shadow-[0_0_20px_hsl(160_84%_39%/0.15)]",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            "[&>option]:bg-slate-800 [&>option]:text-white",
             className
           )}
           ref={ref}
@@ -19,8 +23,8 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         >
           {children}
         </select>
-        <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 rounded-md bg-muted/50 group-hover:bg-muted transition-colors">
-          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+        <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center justify-center w-6 h-6 rounded-lg bg-white/5 group-hover:bg-white/10 transition-colors">
+          <ChevronDown className="h-4 w-4 text-slate-400 group-hover:text-white transition-colors" />
         </div>
       </div>
     )

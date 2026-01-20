@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta - Sistema de Gestión de Lotes | Imagine AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/font/lucide.min.css">
+    <style>
+        /* Lucide icon styling */
+        .icon {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+        .icon-lg {
+            width: 28px;
+            height: 28px;
+        }
+        .icon-xl {
+            width: 32px;
+            height: 32px;
+        }
+        :root {
+            --black: #1d1d1f;
+            --gray-900: #333336;
+            --gray-700: #6e6e73;
+            --gray-500: #86868b;
+            --gray-300: #d2d2d7;
+            --gray-100: #f5f5f7;
+            --white: #ffffff;
+            --blue: #0071e3;
+            --blue-hover: #0077ed;
+            --green: #34c759;
+            --orange: #ff9500;
+            --red: #ff3b30;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .container-sm {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: var(--black);
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--blue) 0%, #00c7be 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .nav-cta {
+            background: var(--blue);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 980px;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--blue-hover);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 100px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--gray-100) 0%, var(--white) 100%);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            padding: 8px 16px;
+            border-radius: 980px;
+            font-size: 0.8125rem;
+            color: var(--gray-700);
+            margin-bottom: 24px;
+        }
+
+        .hero-badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--black);
+            margin-bottom: 20px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, var(--blue) 0%, #00c7be 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray-700);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--blue);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 980px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .hero-cta:hover {
+            background: var(--blue-hover);
+            transform: scale(1.02);
+        }
+
+        /* Section */
+        section {
+            padding: 100px 0;
+        }
+
+        .section-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--blue);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            color: var(--black);
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: var(--gray-700);
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-header .section-subtitle {
+            margin: 0 auto;
+        }
+
+        /* Problem Section */
+        .problems {
+            background: var(--gray-100);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .problem-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid var(--gray-300);
+        }
+
+        .problem-icon {
+            width: 48px;
+            height: 48px;
+            background: #fef2f2;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: #ef4444;
+        }
+
+        .problem-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            color: var(--black);
+        }
+
+        .problem-card p {
+            color: var(--gray-700);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        /* Solution Section */
+        .solution-intro {
+            text-align: center;
+            padding-bottom: 64px;
+        }
+
+        .solution-intro h2 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            margin-bottom: 20px;
+        }
+
+        .solution-intro p {
+            font-size: 1.125rem;
+            color: var(--gray-700);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Feature Blocks */
+        .feature-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            padding: 80px 0;
+            border-top: 1px solid var(--gray-300);
+        }
+
+        .feature-block:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        .feature-block.reverse {
+            direction: rtl;
+        }
+
+        .feature-block.reverse > * {
+            direction: ltr;
+        }
+
+        @media (max-width: 900px) {
+            .feature-block,
+            .feature-block.reverse {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                direction: ltr;
+            }
+        }
+
+        .feature-content h3 {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+            color: var(--black);
+        }
+
+        .feature-content > p {
+            font-size: 1.0625rem;
+            color: var(--gray-700);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-check {
+            width: 24px;
+            height: 24px;
+            background: #e8f5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--green);
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature-list-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--black);
+        }
+
+        .feature-list-content p {
+            font-size: 0.9375rem;
+            color: var(--gray-700);
+            line-height: 1.5;
+        }
+
+        .feature-visual {
+            background: var(--gray-100);
+            border-radius: 24px;
+            padding: 40px;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-mockup {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Stats mockup */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--black);
+            margin-bottom: 4px;
+        }
+
+        .stat-value.green { color: var(--green); }
+        .stat-value.blue { color: var(--blue); }
+        .stat-value.orange { color: var(--orange); }
+
+        .stat-label {
+            font-size: 0.8125rem;
+            color: var(--gray-500);
+        }
+
+        /* Payment visual */
+        .payment-visual {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 100%;
+        }
+
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .payment-header h4 {
+            font-size: 1rem;
+            color: var(--black);
+        }
+
+        .payment-badge {
+            background: #e8f5e9;
+            color: var(--green);
+            padding: 4px 12px;
+            border-radius: 980px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .payment-item-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-item-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gray-100);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-500);
+        }
+
+        .payment-item-info span {
+            display: block;
+        }
+
+        .payment-item-info span:first-child {
+            font-weight: 500;
+            font-size: 0.9375rem;
+            color: var(--black);
+        }
+
+        .payment-item-info span:last-child {
+            font-size: 0.8125rem;
+            color: var(--gray-500);
+        }
+
+        .payment-amount {
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        /* Client portal visual */
+        .portal-mockup {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 100%;
+        }
+
+        .portal-header {
+            background: var(--black);
+            color: white;
+            padding: 20px 24px;
+        }
+
+        .portal-header h4 {
+            font-size: 0.875rem;
+            font-weight: 500;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .portal-header p {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .portal-body {
+            padding: 24px;
+        }
+
+        .portal-progress {
+            margin-bottom: 24px;
+        }
+
+        .portal-progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .portal-progress-header span {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .portal-progress-header strong {
+            color: var(--black);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-100);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
+            border-radius: 4px;
+            width: 65%;
+        }
+
+        .portal-next-payment {
+            background: var(--gray-100);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .portal-next-payment span:first-child {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .portal-next-payment strong {
+            font-size: 1.125rem;
+            color: var(--black);
+        }
+
+        /* AI Chat Section */
+        .ai-section {
+            background: var(--black);
+            color: white;
+        }
+
+        .ai-section .section-label {
+            color: var(--blue);
+        }
+
+        .ai-section .section-title {
+            color: white;
+        }
+
+        .ai-section .section-subtitle {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .ai-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .ai-content {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+        }
+
+        .ai-text h3 {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+        }
+
+        .ai-text > p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1.0625rem;
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        .ai-examples {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .ai-example {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 0.9375rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .ai-example::before {
+            content: '"';
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        .ai-example::after {
+            content: '"';
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        /* Chat mockup */
+        .chat-mockup {
+            background: var(--white);
+            border-radius: 24px;
+            overflow: hidden;
+            color: var(--black);
+        }
+
+        .chat-header {
+            background: var(--gray-100);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--gray-300);
+        }
+
+        .chat-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--blue) 0%, #00c7be 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .chat-header-info h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .chat-header-info span {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .chat-body {
+            padding: 20px;
+            min-height: 280px;
+            background: var(--white);
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chat-message.user {
+            flex-direction: row-reverse;
+        }
+
+        .chat-message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .chat-message:not(.user) .chat-message-avatar {
+            background: linear-gradient(135deg, var(--blue) 0%, #00c7be 100%);
+            color: white;
+        }
+
+        .chat-message.user .chat-message-avatar {
+            background: var(--gray-100);
+        }
+
+        .chat-bubble {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+
+        .chat-message:not(.user) .chat-bubble {
+            background: var(--gray-100);
+            color: var(--black);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-message.user .chat-bubble {
+            background: var(--blue);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input {
+            padding: 16px 20px;
+            border-top: 1px solid var(--gray-300);
+            display: flex;
+            gap: 12px;
+            background: var(--white);
+        }
+
+        .chat-input input {
+            flex: 1;
+            border: 1px solid var(--gray-300);
+            border-radius: 980px;
+            padding: 12px 20px;
+            font-size: 0.9375rem;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .chat-input input:focus {
+            border-color: var(--blue);
+        }
+
+        .chat-input button {
+            width: 44px;
+            height: 44px;
+            background: var(--blue);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .chat-input button:hover {
+            background: var(--blue-hover);
+        }
+
+        /* Timeline */
+        .timeline {
+            background: var(--gray-100);
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .timeline-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .timeline-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .timeline-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px 28px;
+            position: relative;
+            border: 1px solid var(--gray-300);
+        }
+
+        .timeline-number {
+            width: 40px;
+            height: 40px;
+            background: var(--blue);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 20px;
+        }
+
+        .timeline-duration {
+            display: inline-block;
+            background: var(--gray-100);
+            padding: 4px 12px;
+            border-radius: 980px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+        }
+
+        .timeline-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 12px;
+            color: var(--black);
+        }
+
+        .timeline-card p {
+            font-size: 0.9375rem;
+            color: var(--gray-700);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .timeline-tasks {
+            list-style: none;
+        }
+
+        .timeline-tasks li {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            padding: 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timeline-tasks li::before {
+            content: '→';
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        /* Migration */
+        .migration-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 64px;
+            flex-wrap: wrap;
+        }
+
+        .migration-step {
+            text-align: center;
+        }
+
+        .migration-step-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 12px;
+        }
+
+        .migration-step h4 {
+            font-size: 0.9375rem;
+            color: var(--black);
+        }
+
+        .migration-arrow {
+            font-size: 1.5rem;
+            color: var(--gray-500);
+        }
+
+        .migration-benefits {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .migration-benefits {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .migration-benefits {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .migration-benefit {
+            text-align: center;
+            padding: 32px 24px;
+            background: var(--white);
+            border-radius: 20px;
+            border: 1px solid var(--gray-300);
+        }
+
+        .migration-benefit-icon {
+            width: 56px;
+            height: 56px;
+            background: #ecfdf5;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--green);
+        }
+
+        .migration-benefit h4 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--black);
+        }
+
+        .migration-benefit p {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            line-height: 1.5;
+        }
+
+        /* Pricing */
+        .pricing {
+            background: var(--white);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 450px;
+                margin: 0 auto;
+            }
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border: 1px solid var(--gray-300);
+            border-radius: 24px;
+            padding: 40px 32px;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--blue);
+            box-shadow: 0 8px 40px rgba(0, 113, 227, 0.15);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--blue);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 980px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .pricing-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--black);
+        }
+
+        .pricing-description {
+            font-size: 0.9375rem;
+            color: var(--gray-700);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .pricing-price {
+            margin-bottom: 8px;
+        }
+
+        .pricing-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--black);
+            letter-spacing: -0.02em;
+        }
+
+        .pricing-currency {
+            font-size: 1.25rem;
+            font-weight: 600;
+            vertical-align: super;
+        }
+
+        .pricing-period {
+            font-size: 1rem;
+            color: var(--gray-500);
+        }
+
+        .pricing-billing {
+            font-size: 0.8125rem;
+            color: var(--gray-500);
+            margin-bottom: 32px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            font-size: 0.9375rem;
+            color: var(--gray-700);
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--green);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .pricing-cta {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border-radius: 980px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .pricing-card:not(.featured) .pricing-cta {
+            background: var(--gray-100);
+            color: var(--black);
+        }
+
+        .pricing-card:not(.featured) .pricing-cta:hover {
+            background: var(--gray-300);
+        }
+
+        .pricing-card.featured .pricing-cta {
+            background: var(--blue);
+            color: white;
+        }
+
+        .pricing-card.featured .pricing-cta:hover {
+            background: var(--blue-hover);
+        }
+
+        /* Setup pricing */
+        .setup-pricing {
+            margin-top: 48px;
+            background: var(--gray-100);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .setup-pricing h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: var(--black);
+        }
+
+        .setup-pricing > p {
+            color: var(--gray-700);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .setup-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .setup-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .setup-item {
+            text-align: center;
+        }
+
+        .setup-item span {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .setup-item p {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--black);
+            margin: 0;
+        }
+
+        /* Included */
+        .included {
+            background: var(--gray-100);
+        }
+
+        .included-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .included-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .included-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid var(--gray-300);
+        }
+
+        .included-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--blue);
+        }
+
+        .included-card h3 {
+            font-size: 1.125rem;
+            margin-bottom: 8px;
+            color: var(--black);
+        }
+
+        .included-card p {
+            font-size: 0.9375rem;
+            color: var(--gray-700);
+            line-height: 1.6;
+        }
+
+        /* CTA */
+        .cta {
+            background: var(--black);
+            color: white;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 16px;
+        }
+
+        .cta > .container > p {
+            font-size: 1.125rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 32px;
+            border-radius: 980px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .btn-primary:hover {
+            background: var(--gray-100);
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-secondary:hover {
+            border-color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gray-100);
+            padding: 48px 0;
+            text-align: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .footer-logo .logo-mark {
+            width: 28px;
+            height: 28px;
+            font-size: 0.875rem;
+        }
+
+        .footer-logo span {
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        footer p {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-content">
+            <a href="#" class="logo">
+                <div class="logo-mark">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>
+                </div>
+                Imagine AI
+            </a>
+            <a href="#contacto" class="nav-cta">Solicitar demo</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                Propuesta personalizada · Enero 2025
+            </div>
+            <h1>El sistema que su negocio de lotes <span>necesita</span></h1>
+            <p class="hero-subtitle">Deje atrás el Excel. Administre sus proyectos, clientes, ventas y cobranza desde una sola plataforma diseñada para lotificadoras.</p>
+            <a href="#contacto" class="hero-cta">
+                Agendar demostración
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Problems -->
+    <section class="problems">
+        <div class="container">
+            <div class="section-header fade-in">
+                <p class="section-label">El problema</p>
+                <h2 class="section-title">¿Le suena familiar?</h2>
+                <p class="section-subtitle">Estos son los desafíos que enfrentan las empresas de lotificación todos los días</p>
+            </div>
+            <div class="problem-grid">
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
+                    </div>
+                    <h3>Información en Excel dispersa</h3>
+                    <p>Tiene varios archivos de Excel con información de clientes, lotes y pagos. Cuando necesita consultar algo, pierde tiempo buscando en diferentes hojas y nunca está seguro si la información está actualizada.</p>
+                </div>
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+                    </div>
+                    <h3>Pagos que se le escapan</h3>
+                    <p>No tiene un sistema que le avise cuando un cliente está próximo a pagar o ya se atrasó. Se entera de los pagos vencidos cuando ya pasaron varios días o semanas, afectando su flujo de caja.</p>
+                </div>
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <h3>Clientes que llaman a preguntar</h3>
+                    <p>Sus clientes lo llaman frecuentemente para preguntar cuánto deben, cuándo es su próximo pago o pedir un estado de cuenta. Esto le quita tiempo que podría usar en vender más.</p>
+                </div>
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                    </div>
+                    <h3>Sin visibilidad del negocio</h3>
+                    <p>No puede ver fácilmente cuántos lotes tiene disponibles, cuánto dinero tiene por cobrar, o qué tan bien le va en ventas. Tomar decisiones se vuelve difícil sin información clara.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Intro -->
+    <section>
+        <div class="container-sm">
+            <div class="solution-intro fade-in">
+                <h2>Una plataforma diseñada para su negocio</h2>
+                <p>Creamos un sistema específico para empresas que venden lotes. No es un software genérico adaptado, es una herramienta pensada desde cero para resolver exactamente los problemas que usted enfrenta todos los días.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section style="padding-top: 0;">
+        <div class="container">
+            <!-- Feature 1: Projects -->
+            <div class="feature-block fade-in">
+                <div class="feature-content">
+                    <h3>Todos sus proyectos organizados</h3>
+                    <p>Visualice cada uno de sus desarrollos con sus etapas, manzanas y lotes. Sepa exactamente qué tiene disponible, apartado o vendido en cada proyecto.</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Vista completa por proyecto</h4>
+                                <p>Vea todas las etapas de su desarrollo y el estado de cada manzana y lote en un solo lugar.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Precios por metro cuadrado</h4>
+                                <p>Configure precios diferentes por etapa o tipo de lote. El sistema calcula automáticamente el precio total.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Inventario en tiempo real</h4>
+                                <p>Cuando vende o aparta un lote, el inventario se actualiza automáticamente para todo su equipo.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value green">47</div>
+                            <div class="stat-label">Lotes disponibles</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value orange">12</div>
+                            <div class="stat-label">Apartados</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value blue">89</div>
+                            <div class="stat-label">Vendidos</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">148</div>
+                            <div class="stat-label">Total lotes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 2: Payments -->
+            <div class="feature-block reverse fade-in">
+                <div class="feature-content">
+                    <h3>Control total de su cobranza</h3>
+                    <p>Olvídese de revisar Excel para saber quién debe pagar. El sistema le avisa automáticamente de pagos próximos y vencidos, y registra cada pago con su recibo.</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Planes de pago flexibles</h4>
+                                <p>Configure diferentes esquemas: enganche + mensualidades, pagos anuales, con o sin intereses. Usted decide cómo financiar.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Alertas de pagos</h4>
+                                <p>Reciba notificaciones cuando un pago está próximo a vencer o ya se atrasó. Nunca más se le escapará un cobro.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Recibos automáticos</h4>
+                                <p>Cada pago genera un recibo PDF profesional que puede enviar al cliente por WhatsApp o correo.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <div class="payment-visual">
+                        <div class="payment-header">
+                            <h4>Pagos de hoy</h4>
+                            <span class="payment-badge">3 pendientes</span>
+                        </div>
+                        <div class="payment-item">
+                            <div class="payment-item-left">
+                                <div class="payment-item-icon">
+                                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="payment-item-info">
+                                    <span>María González</span>
+                                    <span>Lote A-15 · Mensualidad #8</span>
+                                </div>
+                            </div>
+                            <span class="payment-amount">$850.000</span>
+                        </div>
+                        <div class="payment-item">
+                            <div class="payment-item-left">
+                                <div class="payment-item-icon">
+                                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="payment-item-info">
+                                    <span>Carlos Rodríguez</span>
+                                    <span>Lote B-03 · Mensualidad #4</span>
+                                </div>
+                            </div>
+                            <span class="payment-amount">$720.000</span>
+                        </div>
+                        <div class="payment-item">
+                            <div class="payment-item-left">
+                                <div class="payment-item-icon">
+                                    <svg class="icon" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                </div>
+                                <div class="payment-item-info">
+                                    <span>Ana Martínez</span>
+                                    <span>Lote C-22 · Mensualidad #12</span>
+                                </div>
+                            </div>
+                            <span class="payment-amount">$650.000</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 3: Client Portal -->
+            <div class="feature-block fade-in">
+                <div class="feature-content">
+                    <h3>Portal de autoservicio para sus clientes</h3>
+                    <p>Sus clientes pueden ver su estado de cuenta, historial de pagos y documentos las 24 horas, sin necesidad de llamarlo. Esto le ahorra tiempo y mejora la experiencia del cliente.</p>
+                    <ul class="feature-list">
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Estado de cuenta siempre disponible</h4>
+                                <p>El cliente ve cuánto ha pagado, cuánto debe y cuál es su próximo pago. Sin necesidad de llamar a preguntar.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Historial de pagos completo</h4>
+                                <p>Cada pago registrado queda visible para el cliente con fecha, monto y número de recibo.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-check">✓</span>
+                            <div class="feature-list-content">
+                                <h4>Descarga de documentos</h4>
+                                <p>El cliente puede descargar sus recibos, contrato y estado de cuenta en PDF cuando lo necesite.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <div class="portal-mockup">
+                        <div class="portal-header">
+                            <h4>Bienvenido, Juan Pérez</h4>
+                            <p>Lote A-15 · Residencial Los Álamos</p>
+                        </div>
+                        <div class="portal-body">
+                            <div class="portal-progress">
+                                <div class="portal-progress-header">
+                                    <span>Progreso de pago</span>
+                                    <span><strong>65%</strong> completado</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill"></div>
+                                </div>
+                            </div>
+                            <div class="portal-next-payment">
+                                <span>Próximo pago: 15 de febrero</span>
+                                <strong>$850.000</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Section -->
+    <section class="ai-section">
+        <div class="container">
+            <div class="section-header fade-in">
+                <p class="section-label">Incluido en todos los planes</p>
+                <h2 class="section-title">Asistente inteligente</h2>
+                <p class="section-subtitle">Pregunte lo que necesite en español normal y obtenga respuestas instantáneas de su información</p>
+            </div>
+            <div class="ai-content">
+                <div class="ai-text fade-in">
+                    <h3>Su información, a un mensaje de distancia</h3>
+                    <p>En lugar de buscar en reportes o navegar por menús, simplemente escriba lo que necesita saber. El asistente entiende su pregunta y busca la información en segundos.</p>
+                    <div class="ai-examples">
+                        <div class="ai-example">¿Cuántos lotes me quedan disponibles en la Etapa 2?</div>
+                        <div class="ai-example">¿Quiénes tienen pagos vencidos esta semana?</div>
+                        <div class="ai-example">¿Cuánto hemos vendido este mes?</div>
+                        <div class="ai-example">Dame el estado de cuenta de María González</div>
+                    </div>
+                </div>
+                <div class="chat-mockup fade-in">
+                    <div class="chat-header">
+                        <div class="chat-avatar">
+                            <svg class="icon" style="width:20px;height:20px" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>
+                        </div>
+                        <div class="chat-header-info">
+                            <h4>Asistente Imagine</h4>
+                            <span>En línea · Responde al instante</span>
+                        </div>
+                    </div>
+                    <div class="chat-body">
+                        <div class="chat-message user">
+                            <div class="chat-message-avatar">
+                                <svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <div class="chat-bubble">¿Cuántos lotes me quedan en Residencial Norte?</div>
+                        </div>
+                        <div class="chat-message">
+                            <div class="chat-message-avatar">
+                                <svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>
+                            </div>
+                            <div class="chat-bubble">En Residencial Norte tienes <strong>23 lotes disponibles</strong> de 45 totales. La Etapa 1 está agotada. En Etapa 2 hay 23 lotes desde $45.000.000 COP.</div>
+                        </div>
+                        <div class="chat-message user">
+                            <div class="chat-message-avatar">
+                                <svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <div class="chat-bubble">¿Quiénes deben pagar esta semana?</div>
+                        </div>
+                        <div class="chat-message">
+                            <div class="chat-message-avatar">
+                                <svg class="icon" style="width:18px;height:18px" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>
+                            </div>
+                            <div class="chat-bubble">Esta semana tienen pago programado <strong>8 clientes</strong> por un total de $6.200.000 COP. ¿Quieres ver el listado completo?</div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Escriba su pregunta...">
+                        <button>➤</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline">
+        <div class="container">
+            <div class="section-header fade-in">
+                <p class="section-label">Implementación</p>
+                <h2 class="section-title">Funcionando en 4 semanas</h2>
+                <p class="section-subtitle">Un proceso claro y acompañado para que su equipo domine el sistema rápidamente</p>
+            </div>
+            <div class="timeline-grid">
+                <div class="timeline-card fade-in">
+                    <div class="timeline-number">1</div>
+                    <span class="timeline-duration">Semana 1</span>
+                    <h3>Configuración inicial</h3>
+                    <p>Creamos su cuenta y configuramos la estructura de sus proyectos exactamente como usted los maneja.</p>
+                    <ul class="timeline-tasks">
+                        <li>Creación de su cuenta</li>
+                        <li>Usuarios para su equipo</li>
+                        <li>Estructura de proyectos</li>
+                        <li>Planes de pago</li>
+                    </ul>
+                </div>
+                <div class="timeline-card fade-in">
+                    <div class="timeline-number">2</div>
+                    <span class="timeline-duration">Semana 2</span>
+                    <h3>Migración de datos</h3>
+                    <p>Pasamos toda su información de Excel al sistema: clientes, lotes, ventas y pagos históricos.</p>
+                    <ul class="timeline-tasks">
+                        <li>Análisis de sus Excel</li>
+                        <li>Limpieza de datos</li>
+                        <li>Carga al sistema</li>
+                        <li>Verificación</li>
+                    </ul>
+                </div>
+                <div class="timeline-card fade-in">
+                    <div class="timeline-number">3</div>
+                    <span class="timeline-duration">Semana 3</span>
+                    <h3>Capacitación</h3>
+                    <p>Entrenamos a su equipo para que sepan usar todas las funciones del sistema con confianza.</p>
+                    <ul class="timeline-tasks">
+                        <li>Capacitación administradores</li>
+                        <li>Capacitación vendedores</li>
+                        <li>Guías y videos</li>
+                        <li>Sesión de preguntas</li>
+                    </ul>
+                </div>
+                <div class="timeline-card fade-in">
+                    <div class="timeline-number">4</div>
+                    <span class="timeline-duration">Semana 4+</span>
+                    <h3>Lanzamiento</h3>
+                    <p>El sistema entra en operación con acompañamiento continuo para resolver cualquier duda.</p>
+                    <ul class="timeline-tasks">
+                        <li>Activación portal clientes</li>
+                        <li>Envío de accesos</li>
+                        <li>Soporte prioritario</li>
+                        <li>Ajustes según necesidad</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Migration -->
+    <section>
+        <div class="container">
+            <div class="section-header fade-in">
+                <p class="section-label">Migración</p>
+                <h2 class="section-title">De Excel al sistema sin complicaciones</h2>
+                <p class="section-subtitle">Nosotros nos encargamos de pasar toda su información. Usted sigue trabajando normal.</p>
+            </div>
+            <div class="migration-steps fade-in">
+                <div class="migration-step">
+                    <div class="migration-step-icon">
+                        <svg class="icon icon-xl" viewBox="0 0 24 24" style="color: var(--gray-700)"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                    </div>
+                    <h4>Sus archivos Excel</h4>
+                </div>
+                <div class="migration-arrow">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:28px;height:28px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
+                <div class="migration-step">
+                    <div class="migration-step-icon">
+                        <svg class="icon icon-xl" viewBox="0 0 24 24" style="color: var(--blue)"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                    </div>
+                    <h4>Nosotros procesamos</h4>
+                </div>
+                <div class="migration-arrow">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:28px;height:28px"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </div>
+                <div class="migration-step">
+                    <div class="migration-step-icon">
+                        <svg class="icon icon-xl" viewBox="0 0 24 24" style="color: var(--green)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                    </div>
+                    <h4>Sistema funcionando</h4>
+                </div>
+            </div>
+            <div class="migration-benefits fade-in">
+                <div class="migration-benefit">
+                    <div class="migration-benefit-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                    </div>
+                    <h4>Sin pérdida de datos</h4>
+                    <p>Revisamos cada registro antes de importar para asegurar que nada se pierda</p>
+                </div>
+                <div class="migration-benefit">
+                    <div class="migration-benefit-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                    </div>
+                    <h4>Historial completo</h4>
+                    <p>Todos los pagos que sus clientes han hecho quedan registrados</p>
+                </div>
+                <div class="migration-benefit">
+                    <div class="migration-benefit-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    </div>
+                    <h4>Todo conectado</h4>
+                    <p>Cliente, lote, pagos y documentos quedan correctamente vinculados</p>
+                </div>
+                <div class="migration-benefit">
+                    <div class="migration-benefit-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    </div>
+                    <h4>Sin interrupciones</h4>
+                    <p>Usted sigue operando normal mientras hacemos la migración</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing" id="precios">
+        <div class="container">
+            <div class="section-header fade-in">
+                <p class="section-label">Planes</p>
+                <h2 class="section-title">Elija el plan que se ajuste a su operación</h2>
+                <p class="section-subtitle">Todos los planes incluyen soporte, actualizaciones y almacenamiento. Sin costos ocultos.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card fade-in">
+                    <h3 class="pricing-name">Inicial</h3>
+                    <p class="pricing-description">Para empresas que están comenzando o tienen un solo proyecto pequeño</p>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">$</span><span class="pricing-amount">149.000</span>
+                    </div>
+                    <span class="pricing-period">COP / mes</span>
+                    <p class="pricing-billing">+ IVA · Pago anual con 2 meses gratis</p>
+                    <ul class="pricing-features">
+                        <li>Hasta 100 lotes activos</li>
+                        <li>3 usuarios (admin y vendedores)</li>
+                        <li>1 proyecto</li>
+                        <li>Portal de clientes ilimitado</li>
+                        <li>Reportes básicos</li>
+                        <li>Recibos y estados de cuenta PDF</li>
+                        <li>Asistente IA básico</li>
+                        <li>Soporte por correo</li>
+                    </ul>
+                    <button class="pricing-cta">Comenzar</button>
+                </div>
+                <div class="pricing-card featured fade-in">
+                    <span class="pricing-badge">Más popular</span>
+                    <h3 class="pricing-name">Profesional</h3>
+                    <p class="pricing-description">Para empresas en crecimiento con varios proyectos y equipo comercial</p>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">$</span><span class="pricing-amount">349.000</span>
+                    </div>
+                    <span class="pricing-period">COP / mes</span>
+                    <p class="pricing-billing">+ IVA · Pago anual con 2 meses gratis</p>
+                    <ul class="pricing-features">
+                        <li>Hasta 500 lotes activos</li>
+                        <li>10 usuarios</li>
+                        <li>5 proyectos</li>
+                        <li>Portal de clientes ilimitado</li>
+                        <li>Reportes avanzados con exportación</li>
+                        <li>Sistema de comisiones</li>
+                        <li>Asistente IA completo</li>
+                        <li>Notificaciones automáticas</li>
+                        <li>Soporte prioritario por WhatsApp</li>
+                    </ul>
+                    <button class="pricing-cta">Comenzar</button>
+                </div>
+                <div class="pricing-card fade-in">
+                    <h3 class="pricing-name">Empresarial</h3>
+                    <p class="pricing-description">Para desarrolladoras grandes con necesidades específicas</p>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">$</span><span class="pricing-amount">690.000</span>
+                    </div>
+                    <span class="pricing-period">COP / mes</span>
+                    <p class="pricing-billing">+ IVA · Facturación personalizada</p>
+                    <ul class="pricing-features">
+                        <li>Lotes ilimitados</li>
+                        <li>Usuarios ilimitados</li>
+                        <li>Proyectos ilimitados</li>
+                        <li>Todo lo del plan Profesional</li>
+                        <li>Su logo y marca (white-label)</li>
+                        <li>Integraciones personalizadas</li>
+                        <li>Capacitación presencial</li>
+                        <li>Gerente de cuenta dedicado</li>
+                    </ul>
+                    <button class="pricing-cta">Contactar</button>
+                </div>
+            </div>
+            <div class="setup-pricing fade-in">
+                <h3>Costo único de implementación</h3>
+                <p>Incluye configuración completa, migración de todos sus datos desde Excel, capacitación a su equipo y acompañamiento durante el primer mes de operación.</p>
+                <div class="setup-grid">
+                    <div class="setup-item">
+                        <span>Plan Inicial</span>
+                        <p>$390.000 COP</p>
+                    </div>
+                    <div class="setup-item">
+                        <span>Plan Profesional</span>
+                        <p>$790.000 COP</p>
+                    </div>
+                    <div class="setup-item">
+                        <span>Plan Empresarial</span>
+                        <p>Según alcance</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Included -->
+    <section class="included">
+        <div class="container">
+            <div class="section-header fade-in">
+                <p class="section-label">Incluido</p>
+                <h2 class="section-title">Todo lo que necesita para operar</h2>
+                <p class="section-subtitle">Sin sorpresas. Estos beneficios están incluidos en todos los planes.</p>
+            </div>
+            <div class="included-grid">
+                <div class="included-card fade-in">
+                    <div class="included-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                    </div>
+                    <h3>Actualizaciones automáticas</h3>
+                    <p>Mejoramos el sistema constantemente. Usted siempre tendrá la versión más reciente sin pagar extra.</p>
+                </div>
+                <div class="included-card fade-in">
+                    <div class="included-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                    </div>
+                    <h3>Respaldos diarios</h3>
+                    <p>Su información se respalda automáticamente todos los días. Nunca perderá sus datos.</p>
+                </div>
+                <div class="included-card fade-in">
+                    <div class="included-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <h3>Seguridad empresarial</h3>
+                    <p>Encriptación de datos, acceso seguro y cumplimiento de estándares de protección de información.</p>
+                </div>
+                <div class="included-card fade-in">
+                    <div class="included-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+                    </div>
+                    <h3>Acceso desde cualquier lugar</h3>
+                    <p>Use el sistema desde su computador, tablet o celular. Funciona en cualquier navegador.</p>
+                </div>
+                <div class="included-card fade-in">
+                    <div class="included-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3>Clientes ilimitados</h3>
+                    <p>No importa cuántos clientes tenga, todos pueden acceder al portal sin costo adicional.</p>
+                </div>
+                <div class="included-card fade-in">
+                    <div class="included-icon">
+                        <svg class="icon icon-lg" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                    </div>
+                    <h3>Capacitación incluida</h3>
+                    <p>Entrenamos a su equipo para que dominen el sistema. Además tiene acceso a guías y videos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="contacto">
+        <div class="container">
+            <h2 class="fade-in">¿Listo para modernizar su operación?</h2>
+            <p class="fade-in">Agende una demostración gratuita de 30 minutos. Le mostramos el sistema funcionando con datos de ejemplo similares a los suyos.</p>
+            <div class="cta-buttons fade-in">
+                <a href="mailto:hola@imagineai.co" class="btn btn-primary">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    Agendar demostración
+                </a>
+                <a href="https://wa.me/573001234567" class="btn btn-secondary">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    Escribir por WhatsApp
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">
+                <div class="logo-mark">
+                    <svg class="icon" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/><path d="M19 3v4"/><path d="M21 5h-4"/></svg>
+                </div>
+                <span>Imagine AI</span>
+            </div>
+            <p>© 2025 Imagine AI. Todos los derechos reservados.</p>
+            <p style="margin-top: 8px;">Esta propuesta es válida por 30 días</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fade in on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
