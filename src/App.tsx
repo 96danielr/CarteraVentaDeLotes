@@ -12,6 +12,11 @@ import { ClientsPage } from '@/pages/ClientsPage';
 import { PaymentsPage } from '@/pages/PaymentsPage';
 import { StatementsPage } from '@/pages/StatementsPage';
 import { MyStatementPage } from '@/pages/MyStatementPage';
+import { MyPaymentsPage } from '@/pages/MyPaymentsPage';
+import { ReportsPage } from '@/pages/ReportsPage';
+import { CommissionsPage } from '@/pages/CommissionsPage';
+import { MySalesPage } from '@/pages/MySalesPage';
+import { UsersPage } from '@/pages/UsersPage';
 
 function App() {
   return (
@@ -83,13 +88,47 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="reports"
+                element={
+                  <ProtectedRoute allowedRoles={['master', 'admin']}>
+                    <ReportsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="commissions"
+                element={
+                  <ProtectedRoute allowedRoles={['master', 'admin']}>
+                    <CommissionsPage />
+                  </ProtectedRoute>
+                }
+              />
 
-              {/* Ruta para cliente */}
+              {/* Rutas para comercial */}
+              <Route
+                path="my-sales"
+                element={
+                  <ProtectedRoute allowedRoles={['comercial']}>
+                    <MySalesPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Rutas para cliente */}
               <Route
                 path="my-statement"
                 element={
                   <ProtectedRoute allowedRoles={['cliente']}>
                     <MyStatementPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="my-payments"
+                element={
+                  <ProtectedRoute allowedRoles={['cliente']}>
+                    <MyPaymentsPage />
                   </ProtectedRoute>
                 }
               />
@@ -99,12 +138,7 @@ function App() {
                 path="users"
                 element={
                   <ProtectedRoute allowedRoles={['master']}>
-                    <div className="p-4">
-                      <h1 className="text-2xl font-bold">Gestión de Usuarios</h1>
-                      <p className="text-muted-foreground mt-2">
-                        Esta funcionalidad estará disponible próximamente.
-                      </p>
-                    </div>
+                    <UsersPage />
                   </ProtectedRoute>
                 }
               />

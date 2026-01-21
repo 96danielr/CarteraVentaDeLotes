@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useData } from '@/contexts/DataContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -6,19 +6,29 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency, formatArea, getLotStatusLabel, getLotStatusColor } from '@/utils/formatters';
-import { ArrowLeft, MapPin, Plus, Edit, Trash2, UserPlus } from 'lucide-react';
+import { ArrowLeft, MapPin, Plus, Edit, Trash2, UserPlus, LayoutGrid, Map } from 'lucide-react';
 import { LotFormModal } from '@/components/modals/LotFormModal';
 import { AssignLotModal } from '@/components/modals/AssignLotModal';
 import { ConfirmDialog } from '@/components/modals/ConfirmDialog';
+import { LotMapSVG } from '@/components/maps/LotMapSVG';
 import { Lot } from '@/types';
 
 export function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { getProjectById, getLotsByProject, getClientById, deleteLot } = useData();
+  const { getProjectById, getLotsByProject, getClientById, deleteLot, users } = useData();
   const { permissions } = useAuth();
 
   const project = getProjectById(id || '');
   const projectLots = getLotsByProject(id || '');
+
+  // Get all clients for the map
+  const allClients = useMemo(() => users.filter(u => u.role === 'cliente'), [users]);
+
+  // Check if any lot has map position
+  const hasMapPositions = useMemo(() => projectLots.some(lot => lot.mapPosition), [projectLots]);
+
+  // View mode state
+  const [viewMode, setViewMode] = useState<'map' | 'grid'>(hasMapPositions ? 'map' : 'grid');
 
   // Modal states
   const [showLotModal, setShowLotModal] = useState(false);
@@ -189,56 +199,102 @@ export function ProjectDetailPage() {
 
       {/* Mapa de Lotes */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+        <CardHeader className="flex flex-row items-center justify-between flex-wrap gap-4">
           <CardTitle>Mapa de Lotes</CardTitle>
-          {permissions?.canAssignLots && (
-            <Button size="sm" onClick={handleNewLot}>
-              <Plus className="h-4 w-4 mr-2" />
-              Agregar Lote
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {/* View Toggle */}
+            {hasMapPositions && (
+              <div className="flex rounded-lg border border-white/10 overflow-hidden">
+                <button
+                  onClick={() => setViewMode('map')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-sm transition-colors ${
+                    viewMode === 'map'
+                      ? 'bg-emerald-500/20 text-emerald-400'
+                      : 'bg-transparent text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <Map className="h-4 w-4" />
+                  <span className="hidden sm:inline">Croquis</span>
+                </button>
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-sm transition-colors border-l border-white/10 ${
+                    viewMode === 'grid'
+                      ? 'bg-emerald-500/20 text-emerald-400'
+                      : 'bg-transparent text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <LayoutGrid className="h-4 w-4" />
+                  <span className="hidden sm:inline">Grid</span>
+                </button>
+              </div>
+            )}
+            {permissions?.canAssignLots && (
+              <Button size="sm" onClick={handleNewLot}>
+                <Plus className="h-4 w-4 mr-2" />
+                Agregar Lote
+              </Button>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
-          {Object.entries(lotsByBlock).map(([block, blockLots]) => (
-            <div key={block} className="mb-6">
-              <h3 className="text-sm font-medium text-slate-400 mb-3">
-                Manzana {block}
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                {blockLots.map(lot => {
-                  const client = lot.clientId ? getClientById(lot.clientId) : null;
-                  const isSelected = selectedLot?.id === lot.id;
-
-                  return (
-                    <div
-                      key={lot.id}
-                      onClick={() => handleLotClick(lot)}
-                      className={`
-                        p-3 rounded-lg border cursor-pointer transition-all hover:shadow-lg
-                        ${lot.status === 'available' ? 'border-emerald-500/30 bg-emerald-500/10 hover:border-emerald-500/50 hover:bg-emerald-500/20' : ''}
-                        ${lot.status === 'reserved' ? 'border-amber-500/30 bg-amber-500/10 hover:border-amber-500/50 hover:bg-amber-500/20' : ''}
-                        ${lot.status === 'sold' ? 'border-rose-500/30 bg-rose-500/10 hover:border-rose-500/50 hover:bg-rose-500/20' : ''}
-                        ${isSelected ? 'ring-2 ring-emerald-500 ring-offset-2 ring-offset-slate-900' : ''}
-                      `}
-                    >
-                      <div className="text-center">
-                        <p className="font-bold text-white">{lot.number}</p>
-                        <p className="text-xs text-slate-400">{formatArea(lot.area)}</p>
-                        <Badge className={`mt-1 ${getLotStatusColor(lot.status)}`} variant="secondary">
-                          {getLotStatusLabel(lot.status)}
-                        </Badge>
-                        {client && (
-                          <p className="text-xs mt-1 truncate text-slate-400" title={client.name}>
-                            {client.name}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+          {/* SVG Map View */}
+          {viewMode === 'map' && hasMapPositions && (
+            <div className="h-[500px] lg:h-[600px]">
+              <LotMapSVG
+                lots={projectLots}
+                selectedLotId={selectedLot?.id}
+                onLotSelect={handleLotClick}
+                clients={allClients}
+              />
             </div>
-          ))}
+          )}
+
+          {/* Grid View */}
+          {viewMode === 'grid' && (
+            <>
+              {Object.entries(lotsByBlock).map(([block, blockLots]) => (
+                <div key={block} className="mb-6">
+                  <h3 className="text-sm font-medium text-slate-400 mb-3">
+                    Manzana {block}
+                  </h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                    {blockLots.map(lot => {
+                      const client = lot.clientId ? getClientById(lot.clientId) : null;
+                      const isSelected = selectedLot?.id === lot.id;
+
+                      return (
+                        <div
+                          key={lot.id}
+                          onClick={() => handleLotClick(lot)}
+                          className={`
+                            p-3 rounded-lg border cursor-pointer transition-all hover:shadow-lg
+                            ${lot.status === 'available' ? 'border-emerald-500/30 bg-emerald-500/10 hover:border-emerald-500/50 hover:bg-emerald-500/20' : ''}
+                            ${lot.status === 'reserved' ? 'border-amber-500/30 bg-amber-500/10 hover:border-amber-500/50 hover:bg-amber-500/20' : ''}
+                            ${lot.status === 'sold' ? 'border-rose-500/30 bg-rose-500/10 hover:border-rose-500/50 hover:bg-rose-500/20' : ''}
+                            ${isSelected ? 'ring-2 ring-emerald-500 ring-offset-2 ring-offset-slate-900' : ''}
+                          `}
+                        >
+                          <div className="text-center">
+                            <p className="font-bold text-white">{lot.number}</p>
+                            <p className="text-xs text-slate-400">{formatArea(lot.area)}</p>
+                            <Badge className={`mt-1 ${getLotStatusColor(lot.status)}`} variant="secondary">
+                              {getLotStatusLabel(lot.status)}
+                            </Badge>
+                            {client && (
+                              <p className="text-xs mt-1 truncate text-slate-400" title={client.name}>
+                                {client.name}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
 
           {projectLots.length === 0 && (
             <div className="text-center py-8">
@@ -255,21 +311,23 @@ export function ProjectDetailPage() {
         </CardContent>
       </Card>
 
-      {/* Leyenda */}
-      <div className="flex flex-wrap gap-4 justify-center">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded bg-emerald-500/20 border border-emerald-500/50" />
-          <span className="text-sm text-slate-300">Disponible</span>
+      {/* Leyenda (solo en vista grid) */}
+      {viewMode === 'grid' && (
+        <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-emerald-500/20 border border-emerald-500/50" />
+            <span className="text-sm text-slate-300">Disponible</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-amber-500/20 border border-amber-500/50" />
+            <span className="text-sm text-slate-300">Apartado</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-rose-500/20 border border-rose-500/50" />
+            <span className="text-sm text-slate-300">Vendido</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded bg-amber-500/20 border border-amber-500/50" />
-          <span className="text-sm text-slate-300">Apartado</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded bg-rose-500/20 border border-rose-500/50" />
-          <span className="text-sm text-slate-300">Vendido</span>
-        </div>
-      </div>
+      )}
 
       {/* Lot Form Modal */}
       <LotFormModal

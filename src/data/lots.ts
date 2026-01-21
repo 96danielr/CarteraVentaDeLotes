@@ -1,7 +1,12 @@
 import { Lot } from '@/types';
 
 export const lots: Lot[] = [
-  // Proyecto: Residencial Los Pinos
+  // ========================================
+  // Proyecto: Residencial Los Pinos (proj-001)
+  // Layout: 4 manzanas (A, B, C, D) en cuadrícula
+  // ========================================
+
+  // MANZANA A - Fila superior izquierda
   {
     id: 'lot-001',
     projectId: 'proj-001',
@@ -16,6 +21,8 @@ export const lots: Lot[] = [
     monthlyPayment: 9333,
     totalMonths: 60,
     startDate: '2024-03-01',
+    saleDate: '2024-02-15',
+    mapPosition: { x: 0, y: 0, width: 80, height: 60 },
   },
   {
     id: 'lot-002',
@@ -31,6 +38,8 @@ export const lots: Lot[] = [
     monthlyPayment: 8400,
     totalMonths: 60,
     startDate: '2024-05-15',
+    saleDate: '2024-05-01',
+    mapPosition: { x: 90, y: 0, width: 80, height: 60 },
   },
   {
     id: 'lot-003',
@@ -46,6 +55,8 @@ export const lots: Lot[] = [
     monthlyPayment: 10266,
     totalMonths: 60,
     startDate: '2024-10-01',
+    reservationDate: '2024-09-20',
+    mapPosition: { x: 0, y: 70, width: 80, height: 60 },
   },
   {
     id: 'lot-004',
@@ -55,20 +66,24 @@ export const lots: Lot[] = [
     area: 200,
     price: 700000,
     status: 'available',
+    mapPosition: { x: 90, y: 70, width: 80, height: 60 },
   },
+
+  // MANZANA B - Fila superior derecha
   {
     id: 'lot-005',
     projectId: 'proj-001',
-    number: 'A-05',
-    block: 'A',
+    number: 'B-01',
+    block: 'B',
     area: 250,
     price: 875000,
     status: 'available',
+    mapPosition: { x: 220, y: 0, width: 80, height: 60 },
   },
   {
     id: 'lot-006',
     projectId: 'proj-001',
-    number: 'B-01',
+    number: 'B-02',
     block: 'B',
     area: 300,
     price: 1050000,
@@ -79,26 +94,133 @@ export const lots: Lot[] = [
     monthlyPayment: 14000,
     totalMonths: 60,
     startDate: '2024-02-01',
+    saleDate: '2024-01-20',
+    mapPosition: { x: 310, y: 0, width: 80, height: 60 },
   },
   {
     id: 'lot-007',
     projectId: 'proj-001',
-    number: 'B-02',
+    number: 'B-03',
     block: 'B',
     area: 280,
     price: 980000,
     status: 'available',
+    mapPosition: { x: 220, y: 70, width: 80, height: 60 },
   },
   {
     id: 'lot-008',
     projectId: 'proj-001',
-    number: 'B-03',
+    number: 'B-04',
     block: 'B',
     area: 320,
     price: 1120000,
     status: 'available',
+    mapPosition: { x: 310, y: 70, width: 80, height: 60 },
   },
-  // Proyecto: Hacienda del Valle
+
+  // MANZANA C - Fila inferior izquierda
+  {
+    id: 'lot-013',
+    projectId: 'proj-001',
+    number: 'C-01',
+    block: 'C',
+    area: 190,
+    price: 665000,
+    status: 'available',
+    mapPosition: { x: 0, y: 180, width: 80, height: 60 },
+  },
+  {
+    id: 'lot-014',
+    projectId: 'proj-001',
+    number: 'C-02',
+    block: 'C',
+    area: 210,
+    price: 735000,
+    status: 'reserved',
+    clientId: 'usr-006',
+    mapPosition: { x: 90, y: 180, width: 80, height: 60 },
+  },
+  {
+    id: 'lot-015',
+    projectId: 'proj-001',
+    number: 'C-03',
+    block: 'C',
+    area: 185,
+    price: 647500,
+    status: 'available',
+    mapPosition: { x: 0, y: 250, width: 80, height: 60 },
+  },
+  {
+    id: 'lot-016',
+    projectId: 'proj-001',
+    number: 'C-04',
+    block: 'C',
+    area: 195,
+    price: 682500,
+    status: 'sold',
+    clientId: 'usr-005',
+    salesPersonId: 'usr-004',
+    downPayment: 136500,
+    monthlyPayment: 9100,
+    totalMonths: 60,
+    startDate: '2024-06-01',
+    saleDate: '2024-05-20',
+    mapPosition: { x: 90, y: 250, width: 80, height: 60 },
+  },
+
+  // MANZANA D - Fila inferior derecha
+  {
+    id: 'lot-017',
+    projectId: 'proj-001',
+    number: 'D-01',
+    block: 'D',
+    area: 240,
+    price: 840000,
+    status: 'available',
+    mapPosition: { x: 220, y: 180, width: 80, height: 60 },
+  },
+  {
+    id: 'lot-018',
+    projectId: 'proj-001',
+    number: 'D-02',
+    block: 'D',
+    area: 275,
+    price: 962500,
+    status: 'available',
+    mapPosition: { x: 310, y: 180, width: 80, height: 60 },
+  },
+  {
+    id: 'lot-019',
+    projectId: 'proj-001',
+    number: 'D-03',
+    block: 'D',
+    area: 290,
+    price: 1015000,
+    status: 'sold',
+    clientId: 'usr-007',
+    salesPersonId: 'usr-003',
+    downPayment: 203000,
+    monthlyPayment: 13533,
+    totalMonths: 60,
+    startDate: '2024-04-01',
+    saleDate: '2024-03-15',
+    mapPosition: { x: 220, y: 250, width: 80, height: 60 },
+  },
+  {
+    id: 'lot-020',
+    projectId: 'proj-001',
+    number: 'D-04',
+    block: 'D',
+    area: 310,
+    price: 1085000,
+    status: 'reserved',
+    mapPosition: { x: 310, y: 250, width: 80, height: 60 },
+  },
+
+  // ========================================
+  // Proyecto: Hacienda del Valle (proj-002)
+  // Layout: 2 filas de 3 lotes grandes
+  // ========================================
   {
     id: 'lot-009',
     projectId: 'proj-002',
@@ -112,6 +234,8 @@ export const lots: Lot[] = [
     monthlyPayment: 18666,
     totalMonths: 60,
     startDate: '2023-09-01',
+    saleDate: '2023-08-20',
+    mapPosition: { x: 0, y: 0, width: 120, height: 90 },
   },
   {
     id: 'lot-010',
@@ -120,6 +244,7 @@ export const lots: Lot[] = [
     area: 450,
     price: 1260000,
     status: 'available',
+    mapPosition: { x: 130, y: 0, width: 120, height: 90 },
   },
   {
     id: 'lot-011',
@@ -128,6 +253,7 @@ export const lots: Lot[] = [
     area: 600,
     price: 1680000,
     status: 'reserved',
+    mapPosition: { x: 260, y: 0, width: 120, height: 90 },
   },
   {
     id: 'lot-012',
@@ -136,5 +262,31 @@ export const lots: Lot[] = [
     area: 480,
     price: 1344000,
     status: 'available',
+    mapPosition: { x: 0, y: 100, width: 120, height: 90 },
+  },
+  {
+    id: 'lot-021',
+    projectId: 'proj-002',
+    number: '05',
+    area: 520,
+    price: 1456000,
+    status: 'available',
+    mapPosition: { x: 130, y: 100, width: 120, height: 90 },
+  },
+  {
+    id: 'lot-022',
+    projectId: 'proj-002',
+    number: '06',
+    area: 580,
+    price: 1624000,
+    status: 'sold',
+    clientId: 'usr-008',
+    salesPersonId: 'usr-004',
+    downPayment: 324800,
+    monthlyPayment: 21653,
+    totalMonths: 60,
+    startDate: '2024-01-15',
+    saleDate: '2024-01-05',
+    mapPosition: { x: 260, y: 100, width: 120, height: 90 },
   },
 ];

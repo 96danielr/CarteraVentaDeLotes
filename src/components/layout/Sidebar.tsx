@@ -10,6 +10,9 @@ import {
   FileText,
   Settings,
   X,
+  BarChart3,
+  Award,
+  TrendingUp,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -56,6 +59,12 @@ const navItems: NavItem[] = [
     roles: ['master', 'admin', 'comercial'],
   },
   {
+    label: 'Realizar Pago',
+    path: '/my-payments',
+    icon: <CreditCard className="h-5 w-5" />,
+    roles: ['cliente'],
+  },
+  {
     label: 'Mi Estado de Cuenta',
     path: '/my-statement',
     icon: <FileText className="h-5 w-5" />,
@@ -66,6 +75,24 @@ const navItems: NavItem[] = [
     path: '/statements',
     icon: <FileText className="h-5 w-5" />,
     roles: ['master', 'admin', 'comercial'],
+  },
+  {
+    label: 'Mis Ventas',
+    path: '/my-sales',
+    icon: <TrendingUp className="h-5 w-5" />,
+    roles: ['comercial'],
+  },
+  {
+    label: 'Comisiones',
+    path: '/commissions',
+    icon: <Award className="h-5 w-5" />,
+    roles: ['master', 'admin'],
+  },
+  {
+    label: 'Reportes',
+    path: '/reports',
+    icon: <BarChart3 className="h-5 w-5" />,
+    roles: ['master', 'admin'],
   },
   {
     label: 'Usuarios',

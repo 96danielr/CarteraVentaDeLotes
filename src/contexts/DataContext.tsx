@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { Project, Lot, Payment, User } from '@/types';
+import { Project, Lot, Payment, User, Commission, CommissionStatus } from '@/types';
 import { projects as initialProjects } from '@/data/projects';
 import { lots as initialLots } from '@/data/lots';
 import { payments as initialPayments } from '@/data/payments';
 import { users as initialUsers } from '@/data/users';
+import { commissions as initialCommissions } from '@/data/commissions';
 import { generateReceiptNumber } from '@/utils/formatters';
 
 interface DataContextType {
@@ -12,6 +13,7 @@ interface DataContextType {
   lots: Lot[];
   payments: Payment[];
   users: User[];
+  commissions: Commission[];
 
   // Project operations
   addProject: (project: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => void;
@@ -38,15 +40,23 @@ interface DataContextType {
   deleteUser: (id: string) => void;
   getUserById: (id: string) => User | undefined;
 
+  // Commission operations
+  addCommission: (commission: Omit<Commission, 'id' | 'createdAt'>) => void;
+  updateCommissionStatus: (id: string, status: CommissionStatus, userId: string) => void;
+
   // Queries
   getProjectById: (id: string) => Project | undefined;
   getLotById: (id: string) => Lot | undefined;
   getLotsByProject: (projectId: string) => Lot[];
   getLotsByClient: (clientId: string) => Lot[];
+  getLotsBySalesPerson: (salesPersonId: string) => Lot[];
   getPaymentsByLot: (lotId: string) => Payment[];
   getPaymentsByClient: (clientId: string) => Payment[];
   getClientById: (id: string) => User | undefined;
   getClients: () => User[];
+  getSalesPersons: () => User[];
+  getCommissionsBySalesPerson: (salesPersonId: string) => Commission[];
+  getCommissionsByStatus: (status: CommissionStatus) => Commission[];
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -60,6 +70,7 @@ export function DataProvider({ children }: DataProviderProps) {
   const [lots, setLots] = useState<Lot[]>(initialLots);
   const [payments, setPayments] = useState<Payment[]>(initialPayments);
   const [users, setUsers] = useState<User[]>(initialUsers);
+  const [commissions, setCommissions] = useState<Commission[]>(initialCommissions);
 
   // Project operations
   const addProject = useCallback((projectData: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>) => {
@@ -207,6 +218,54 @@ export function DataProvider({ children }: DataProviderProps) {
     [users]
   );
 
+  const getSalesPersons = useCallback(
+    () => users.filter(u => u.role === 'comercial'),
+    [users]
+  );
+
+  // Commission operations
+  const addCommission = useCallback((commissionData: Omit<Commission, 'id' | 'createdAt'>) => {
+    const newCommission: Commission = {
+      ...commissionData,
+      id: `com-${Date.now()}`,
+      createdAt: new Date().toISOString().split('T')[0],
+    };
+    setCommissions(prev => [...prev, newCommission]);
+  }, []);
+
+  const updateCommissionStatus = useCallback((id: string, status: CommissionStatus, userId: string) => {
+    const now = new Date().toISOString().split('T')[0];
+    setCommissions(prev =>
+      prev.map(c => {
+        if (c.id !== id) return c;
+        const updates: Partial<Commission> = { status };
+        if (status === 'approved') {
+          updates.approvedAt = now;
+          updates.approvedBy = userId;
+        } else if (status === 'paid') {
+          updates.paidAt = now;
+          updates.paidBy = userId;
+        }
+        return { ...c, ...updates };
+      })
+    );
+  }, []);
+
+  const getLotsBySalesPerson = useCallback(
+    (salesPersonId: string) => lots.filter(l => l.salesPersonId === salesPersonId),
+    [lots]
+  );
+
+  const getCommissionsBySalesPerson = useCallback(
+    (salesPersonId: string) => commissions.filter(c => c.salesPersonId === salesPersonId),
+    [commissions]
+  );
+
+  const getCommissionsByStatus = useCallback(
+    (status: CommissionStatus) => commissions.filter(c => c.status === status),
+    [commissions]
+  );
+
   return (
     <DataContext.Provider
       value={{
@@ -214,6 +273,7 @@ export function DataProvider({ children }: DataProviderProps) {
         lots,
         payments,
         users,
+        commissions,
         addProject,
         updateProject,
         deleteProject,
@@ -226,14 +286,20 @@ export function DataProvider({ children }: DataProviderProps) {
         updateUser,
         deleteUser,
         getUserById,
+        addCommission,
+        updateCommissionStatus,
         getProjectById,
         getLotById,
         getLotsByProject,
         getLotsByClient,
+        getLotsBySalesPerson,
         getPaymentsByLot,
         getPaymentsByClient,
         getClientById,
         getClients,
+        getSalesPersons,
+        getCommissionsBySalesPerson,
+        getCommissionsByStatus,
       }}
     >
       {children}

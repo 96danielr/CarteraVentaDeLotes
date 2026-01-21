@@ -1,10 +1,13 @@
 import { useMemo, useState } from 'react';
+import { pdf } from '@react-pdf/renderer';
 import { useAuth } from '@/contexts/AuthContext';
 import { useData } from '@/contexts/DataContext';
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { StatementPDF } from '@/components/pdf/StatementPDF';
+import { Statement } from '@/types';
 import {
   Table,
   TableBody,
@@ -26,6 +29,7 @@ export function MyStatementPage() {
   const { user } = useAuth();
   const { lots, projects, getLotsByClient, getPaymentsByLot } = useData();
   const [selectedLotId, setSelectedLotId] = useState('');
+  const [downloading, setDownloading] = useState(false);
 
   const clientLots = getLotsByClient(user?.id || '');
 
@@ -49,8 +53,9 @@ export function MyStatementPage() {
 
     return {
       lot,
-      project,
+      project: project!,
       payments: lotPayments,
+      totalPrice: lot.price,
       totalPaid,
       remaining,
       paidPercentage,
@@ -58,6 +63,41 @@ export function MyStatementPage() {
       monthsRemaining,
     };
   }, [selectedLotId, clientLots, lots, projects, getPaymentsByLot]);
+
+  const handleDownloadPDF = async () => {
+    if (!statement || !user) return;
+
+    setDownloading(true);
+    try {
+      const statementData: Statement = {
+        client: user,
+        lot: statement.lot,
+        project: statement.project,
+        payments: statement.payments,
+        totalPrice: statement.totalPrice,
+        totalPaid: statement.totalPaid,
+        remaining: statement.remaining,
+        paidPercentage: statement.paidPercentage,
+        paymentStatus: 'on_time',
+        monthsPaid: statement.monthsPaid,
+        monthsRemaining: statement.monthsRemaining,
+      };
+
+      const blob = await pdf(<StatementPDF statement={statementData} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Mi_Estado_Cuenta_Lote_${statement.lot.number}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   if (clientLots.length === 0) {
     return (
@@ -89,9 +129,9 @@ export function MyStatementPage() {
           <h1 className="text-2xl font-bold">Mi Estado de Cuenta</h1>
           <p className="text-muted-foreground">Consulta el estado de tus lotes</p>
         </div>
-        <Button>
+        <Button onClick={handleDownloadPDF} disabled={downloading || !statement}>
           <Download className="h-4 w-4 mr-2" />
-          Descargar PDF
+          {downloading ? 'Generando...' : 'Descargar PDF'}
         </Button>
       </div>
 

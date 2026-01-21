@@ -1,10 +1,13 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { pdf } from '@react-pdf/renderer';
 import { useData } from '@/contexts/DataContext';
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { StatementPDF } from '@/components/pdf/StatementPDF';
+import { Statement } from '@/types';
 import {
   Table,
   TableBody,
@@ -31,6 +34,7 @@ export function StatementsPage() {
   const [selectedLotId, setSelectedLotId] = useState('');
 
   const clients = getClients();
+  const [downloading, setDownloading] = useState(false);
 
   // Lotes del cliente seleccionado
   const clientLots = useMemo(() => {
@@ -61,16 +65,53 @@ export function StatementsPage() {
 
     return {
       lot,
-      project,
-      client,
+      project: project!,
+      client: client!,
       payments: lotPayments,
+      totalPrice: lot.price,
       totalPaid,
       remaining,
       paidPercentage,
       monthsPaid,
       monthsRemaining,
+      paymentStatus: 'on_time' as const,
     };
   }, [selectedLotId, clientLots, lots, projects, getClientById, getPaymentsByLot]);
+
+  const handleDownloadPDF = async () => {
+    if (!statement || !statement.client || !statement.project) return;
+
+    setDownloading(true);
+    try {
+      const statementData: Statement = {
+        client: statement.client,
+        lot: statement.lot,
+        project: statement.project,
+        payments: statement.payments,
+        totalPrice: statement.totalPrice,
+        totalPaid: statement.totalPaid,
+        remaining: statement.remaining,
+        paidPercentage: statement.paidPercentage,
+        paymentStatus: statement.paymentStatus,
+        monthsPaid: statement.monthsPaid,
+        monthsRemaining: statement.monthsRemaining,
+      };
+
+      const blob = await pdf(<StatementPDF statement={statementData} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Estado_Cuenta_${statement.client.name.replace(/\s+/g, '_')}_${statement.lot.number}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   return (
     <div className="space-y-6 stagger-children">
@@ -148,9 +189,9 @@ export function StatementsPage() {
                     </div>
                   </div>
                 </div>
-                <Button className="shadow-lg">
+                <Button className="shadow-lg" onClick={handleDownloadPDF} disabled={downloading}>
                   <Download className="h-4 w-4 mr-2" />
-                  Descargar PDF
+                  {downloading ? 'Generando...' : 'Descargar PDF'}
                 </Button>
               </div>
             </div>

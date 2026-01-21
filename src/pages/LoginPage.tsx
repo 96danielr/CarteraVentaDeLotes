@@ -35,7 +35,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-start justify-center pt-[8vh] p-4 relative overflow-hidden">
       {/* Animated background gradients */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-[120px] animate-pulse" />
@@ -56,10 +56,12 @@ export function LoginPage() {
         {/* Logo Header */}
         <div className="text-center mb-8">
           <div className="relative inline-block mb-4">
+            {/* Light glow behind logo for contrast */}
+            <div className="absolute inset-0 bg-white/90 rounded-full blur-xl scale-75" />
             <img
               src="/TERRA VALORIS LOGO TRANSPARENCIA.png"
               alt="Terra Valoris"
-              className="w-28 h-28 object-contain mx-auto drop-shadow-2xl"
+              className="relative w-28 h-28 object-contain mx-auto drop-shadow-2xl"
             />
           </div>
           <h1 className="text-2xl font-bold text-white mb-1">INVERSIONES TERRA VALORIS</h1>
