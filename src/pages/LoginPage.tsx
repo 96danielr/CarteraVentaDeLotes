@@ -35,7 +35,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-start justify-center pt-[8vh] p-4 relative overflow-hidden">
+    <div className="min-h-full h-full flex items-start justify-center pt-[8vh] p-4 pb-safe relative overflow-hidden">
       {/* Animated background gradients */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-[120px] animate-pulse" />
